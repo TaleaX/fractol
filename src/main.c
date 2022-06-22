@@ -6,7 +6,7 @@
 /*   By: tdehne <tdehne@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 14:19:35 by tdehne            #+#    #+#             */
-/*   Updated: 2022/06/04 13:23:50 by tdehne           ###   ########.fr       */
+/*   Updated: 2022/06/22 07:44:58 by tdehne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ int main()
 	win_height = 890;
 	mlx = mlx_init();
 	mlx_win = mlx_new_window(mlx, win_width, win_height, "Hello world!");
-	img.img = mlx_new_image(mlx, 10, 10);
+	img.img = mlx_new_image(mlx, 20, 20);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
 	
 	//mlx_win = mlx_new_window(mlx, 1920, 1080, "Hello world!");
