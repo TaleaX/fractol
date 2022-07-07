@@ -6,7 +6,7 @@
 /*   By: tdehne <tdehne@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 07:24:48 by tdehne            #+#    #+#             */
-/*   Updated: 2022/07/05 13:26:16 by tdehne           ###   ########.fr       */
+/*   Updated: 2022/07/07 15:02:41 by tdehne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,9 @@
 # define LIGHT_PURPLE 0x00288f2
 # define ROSA 0x00e58feb
 #include <math.h>
-#include "mlx.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include "../mlx_new/include/MLX42/MLX42.h"
 
 enum {
 	ON_KEYDOWN = 2,
@@ -33,7 +35,7 @@ enum {
 };
 
 typedef struct	s_img {
-	void	*img;
+	mlx_image_t	*img;
 	char	*addr;
 	int		bpp;
 	int		line_length;
@@ -41,13 +43,15 @@ typedef struct	s_img {
 }				t_img;
 
 typedef struct	s_vars {
-	void	*mlx;
-	void	*win;
+	mlx_t	*mlx;
+}				t_vars;
+
+typedef struct	s_graphic_vars {
 	int		win_height;
 	int		win_width;
 	int		count;
 	float	zoom;
-}				t_vars;
+}				t_graphic_vars;
 
 typedef struct	s_pxl_data {
 	int	counter;
@@ -58,8 +62,7 @@ typedef struct	s_pxl_data {
 void	img_pix_put(t_img *img, int x, int y, int color);
 void	my_mlx_pixel_put(t_img *data, int x, int y, int color);
 int		color(int n, int max_value, double width, double offset, int reverse);
-void	calc_mandel(double c_r, double c_i, double z_r, double z_i, int px, int py, int depth, t_img *img, int *count);
-void	make_mandel(t_vars *vars, t_img *img);
+void	make_mandel(t_pxl_data *pxl, t_graphic_vars *g_vars);
 void	make_julia(t_vars *vars, t_img *img);
 
 #endif
