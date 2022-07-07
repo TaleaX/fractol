@@ -6,7 +6,7 @@
 /*   By: tdehne <tdehne@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 07:24:48 by tdehne            #+#    #+#             */
-/*   Updated: 2022/07/07 15:02:41 by tdehne           ###   ########.fr       */
+/*   Updated: 2022/07/07 16:30:51 by tdehne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ typedef struct	s_graphic_vars {
 	int		win_width;
 	int		count;
 	float	zoom;
+	float	x_start;
+	float	y_start;
 }				t_graphic_vars;
 
 typedef struct	s_pxl_data {

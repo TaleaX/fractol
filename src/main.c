@@ -6,7 +6,7 @@
 /*   By: tdehne <tdehne@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 07:19:22 by tdehne            #+#    #+#             */
-/*   Updated: 2022/07/07 16:17:08 by tdehne           ###   ########.fr       */
+/*   Updated: 2022/07/07 17:55:42 by tdehne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ typedef struct s_loop {
 	t_pxl_data 		*pxl;
 	t_vars			*vars;
 	t_img			*img;
-	int				*mouse_x;
-	int				*mouse_y;
+	int				mouse_x;
+	int				mouse_y;
 } t_loop;
 
 void test(void *context){
@@ -48,9 +48,8 @@ void test(void *context){
 		}
 		(tmp)++;
 	}
+	mlx_get_mouse_pos(loop->vars->mlx, &loop->mouse_x, &loop->mouse_y);
 	mlx_image_to_window(loop->vars->mlx, loop->img->img, 0, 0);
-	mlx_get_mouse_pos(loop->vars->mlx, loop->mouse_x, loop->mouse_y);
-	printf("mouse x = %d, mouse y = %d\n", *loop->mouse_x, *loop->mouse_y);
 }
 
 int mouse_hook(int mousecode, t_graphic_vars *g_vars)
@@ -68,19 +67,18 @@ int main()
 	t_graphic_vars	g_vars;
 	t_loop			loop;
 	t_pxl_data		*pxl;
-	int				mouse_x;
-	int				mouse_y;
 	int				count;
 
 	pxl = (t_pxl_data *)malloc(sizeof(t_pxl_data) * (600 * 600 + 1));
 	count = 0;
+	loop.mouse_x = 0;
+	loop.mouse_y = 0;
 	g_vars.count = 0;
 	g_vars.zoom = 1;
 	g_vars.win_height = 600;
 	g_vars.win_width = 600;
 	loop.g_vars = &g_vars;
 	loop.pxl = pxl;
-	
 	vars.mlx = mlx_init(g_vars.win_width, g_vars.win_height, "FRACTOL", 1);
 	//vars.win = mlx_new_image(vars.mlx, g_vars.win_width, g_vars.win_height);
 	img.img = mlx_new_image(vars.mlx, g_vars.win_width, g_vars.win_height);
