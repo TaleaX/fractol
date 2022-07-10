@@ -6,7 +6,7 @@
 /*   By: tdehne <tdehne@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 07:19:22 by tdehne            #+#    #+#             */
-/*   Updated: 2022/07/10 13:00:11 by tdehne           ###   ########.fr       */
+/*   Updated: 2022/07/10 20:31:28 by tdehne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,13 +89,13 @@ void my_keyhook(mlx_key_data_t keydata, void* context)
 void mouse_press(mouse_key_t button, action_t action, modifier_key_t mods, void* context)
 {
 	t_all_s	*all_s = context;
-	float	m_wx;
-	float	m_wy;
+	double	m_sx;
+	double	m_sy;
 		
 	if (mlx_is_mouse_down(all_s->vars->mlx, MLX_MOUSE_BUTTON_LEFT))
 	{
-		mlx_get_mouse_pos(all_s->vars->mlx, &all_s->mouse_x, &all_s->mouse_y);
-		screen_to_world(&all_s->g_vars->m_wy_start, &all_s->g_vars->m_wx_start, all_s->mouse_x, all_s->mouse_y, all_s);
+		mlx_get_mouse_pos(all_s->vars->mlx, &m_sx, &m_sy);
+		screen_to_world(&all_s->g_vars->m_wy_start, &all_s->g_vars->m_wx_start, m_sx, m_sy, all_s);
 	}
 }
 
@@ -112,10 +112,11 @@ void	zoom(double xdelta, double ydelta, void* context)
 	double	offset_y;
 	double	m_wx;
 	double	m_wy;
-	static	int	init;
+	int		m_sx;
+	int		m_sy;
 
-	mlx_get_mouse_pos(all_s->vars->mlx, &all_s->mouse_x, &all_s->mouse_y);
-	screen_to_world(&m_wx, &m_wy, all_s->mouse_x, all_s->mouse_y, all_s);
+	mlx_get_mouse_pos(all_s->vars->mlx, &m_sx, &m_sy);
+	screen_to_world(&m_wx, &m_wy, m_sx, m_sy, all_s);
 	
 	
 	all_s->g_vars->offset_x = (all_s->g_vars->m_wx_start - m_wx);
@@ -127,13 +128,15 @@ void	zoom(double xdelta, double ydelta, void* context)
 	{
 		//all_s->g_vars->offset_x -= ((float)all_s->mouse_x / all_s->vars->win_width);
 		//all_s->g_vars->offset_y -= ((float)all_s->mouse_y / all_s->vars->win_height);
-		all_s->g_vars->zoom *= 0.9;
+		all_s->g_vars->zoom_x *= 0.9;
+		all_s->g_vars->zoom_y *= 0.9;
 	}
 	else
 	{
 		//all_s->g_vars->offset_x += ((float)all_s->mouse_x / all_s->vars->win_width);
 		//all_s->g_vars->offset_y += ((float)all_s->mouse_y / all_s->vars->win_height);
-		all_s->g_vars->zoom *= 1.1;
+		all_s->g_vars->zoom_x *= 1.1;
+		all_s->g_vars->zoom_y *= 1.1;
 	}
 	all_s->g_vars->m_wx_start = m_wx;
 	all_s->g_vars->m_wy_start = m_wy;
@@ -152,15 +155,14 @@ int main()
 
 	pxl = (t_pxl_data *)malloc(sizeof(t_pxl_data) * (700 * 700 + 1));
 	count = 0;
-	all_s.mouse_x = 0;
-	all_s.mouse_y = 0;
 	g_vars.count = 0;
 	
 	vars.win_height = 600;
 	vars.win_width = 600;
 	g_vars.w_x = -2;
 	g_vars.w_y = 2;
-	g_vars.zoom = 1;
+	g_vars.zoom_x = vars.win_width / 4.0;
+	g_vars.zoom_y = vars.win_height / 4.0;
 	g_vars.offset_x = 2;
 	g_vars.offset_y = 2;
 	all_s.g_vars = &g_vars;
