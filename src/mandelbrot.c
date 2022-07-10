@@ -6,7 +6,7 @@
 /*   By: tdehne <tdehne@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 17:31:26 by tdehne            #+#    #+#             */
-/*   Updated: 2022/07/10 12:44:58 by tdehne           ###   ########.fr       */
+/*   Updated: 2022/07/10 21:46:06 by tdehne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void calc_mandel(t_mandel *mandel, t_graphic_vars *g_vars, t_pxl_data *pxl)
 	{
 		re = mandel->z_r * mandel->z_r - mandel->z_i * mandel->z_i + mandel->c_r;
 		im = 2 * mandel->z_r * mandel->z_i + mandel->c_i;
-		if (counter == 50){
+		if (counter == 500){
 			pxl->counter = counter;
 			pxl->px = g_vars->s_x;
 			pxl->py = g_vars->s_y;
@@ -115,13 +115,11 @@ void	make_mandel(t_pxl_data *pxl, t_graphic_vars *g_vars, t_vars *vars, t_mandel
 	int		first;
 
 	first = 1;
-	g_vars->steps_x =  4.0 * g_vars->zoom / vars->win_width;
-	g_vars->steps_y = 4.0 * g_vars->zoom / vars->win_height;
 	for (g_vars->s_x = 0; g_vars->s_x < vars->win_width; g_vars->s_x++)
 	{
 		for (g_vars->s_y = 0; g_vars->s_y < vars->win_height; g_vars->s_y++)
 		{
-			screen_to_world(&g_vars->w_x, &g_vars->w_y, g_vars->s_x, g_vars->s_y, all_s);
+			screen_to_world(&g_vars->w_x, &g_vars->w_y, g_vars->s_x, g_vars->s_y, all_s->g_vars);
 			if (first)
 			{
 				tmp_wx = g_vars->w_x;

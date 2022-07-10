@@ -6,7 +6,7 @@
 /*   By: tdehne <tdehne@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 07:19:22 by tdehne            #+#    #+#             */
-/*   Updated: 2022/07/10 20:31:28 by tdehne           ###   ########.fr       */
+/*   Updated: 2022/07/10 21:49:12 by tdehne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@ void test(void *context){
 	tmp = all_s->pxl;
 	while (tmp->px != -1)
 	{
-		if (tmp->counter == 50)
+		if (tmp->counter == 500)
 		{
 			mlx_put_pixel(all_s->img->img, tmp->px, tmp->py, 0x000000FF);
 		}
 		else
 		{
-			mlx_put_pixel(all_s->img->img, tmp->px, tmp->py, color(tmp->counter, 50, 5 * M_PI / 3 + sin(all_s->g_vars->count / 20.0) + 1, sin(all_s->g_vars->count / 20.0) + 1, 0));
+			mlx_put_pixel(all_s->img->img, tmp->px, tmp->py, color(tmp->counter, 500, 5 * M_PI / 3 + sin(all_s->g_vars->count / 20.0) + 1, sin(all_s->g_vars->count / 20.0) + 1, 0));
 		}
 		(tmp)++;
 	}
@@ -89,14 +89,17 @@ void my_keyhook(mlx_key_data_t keydata, void* context)
 void mouse_press(mouse_key_t button, action_t action, modifier_key_t mods, void* context)
 {
 	t_all_s	*all_s = context;
-	double	m_sx;
-	double	m_sy;
-		
-	if (mlx_is_mouse_down(all_s->vars->mlx, MLX_MOUSE_BUTTON_LEFT))
+	int	m_sx;
+	int	m_sy;
+
+	if (button == MLX_MOUSE_BUTTON_LEFT && action == MLX_PRESS)
 	{
 		mlx_get_mouse_pos(all_s->vars->mlx, &m_sx, &m_sy);
-		screen_to_world(&all_s->g_vars->m_wy_start, &all_s->g_vars->m_wx_start, m_sx, m_sy, all_s);
+		screen_to_world(&all_s->g_vars->m_wx_start, &all_s->g_vars->m_wy_start, m_sx, m_sy, all_s->g_vars);
+		all_s->g_vars->offset_x += all_s->g_vars->m_wx_start;
+		all_s->g_vars->offset_y += all_s->g_vars->m_wy_start * (-1.0);
 	}
+	make_mandel(all_s->pxl, all_s->g_vars, all_s->vars, all_s->mandel, all_s);
 }
 
 float	abs_f(float num)
@@ -116,11 +119,12 @@ void	zoom(double xdelta, double ydelta, void* context)
 	int		m_sy;
 
 	mlx_get_mouse_pos(all_s->vars->mlx, &m_sx, &m_sy);
-	screen_to_world(&m_wx, &m_wy, m_sx, m_sy, all_s);
+	screen_to_world(&m_wx, &m_wy, m_sx, m_sy, all_s->g_vars);
 	
 	
-	all_s->g_vars->offset_x = (all_s->g_vars->m_wx_start - m_wx);
-	all_s->g_vars->offset_y = (all_s->g_vars->m_wy_start - m_wy);
+	//all_s->g_vars->offset_x += (all_s->g_vars->m_wx_start - m_wx);
+	//all_s->g_vars->offset_y += (all_s->g_vars->m_wy_start - m_wy);
+	printf("%lf %lf %lf %lf\n", all_s->g_vars->offset_x, all_s->g_vars->offset_y, all_s->g_vars->m_wx_start, m_wx);
 	//m_wx = all_s->g_vars->steps_x * all_s->mouse_x + all_s->g_vars->w_x;
 	//m_wy = (all_s->mouse_y < all_s->vars->win_height / 2) ? (all_s->g_vars->w_y - all_s->g_vars->steps_y * all_s->mouse_y) : -(all_s->g_vars->steps_y * all_s->mouse_y - all_s->g_vars->w_y);
 
@@ -138,8 +142,8 @@ void	zoom(double xdelta, double ydelta, void* context)
 		all_s->g_vars->zoom_x *= 1.1;
 		all_s->g_vars->zoom_y *= 1.1;
 	}
-	all_s->g_vars->m_wx_start = m_wx;
-	all_s->g_vars->m_wy_start = m_wy;
+	//all_s->g_vars->m_wx_start = m_wx;
+	//all_s->g_vars->m_wy_start = m_wy;
 	make_mandel(all_s->pxl, all_s->g_vars, all_s->vars, all_s->mandel, all_s);
 }
 
