@@ -6,7 +6,7 @@
 /*   By: tdehne <tdehne@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 17:31:26 by tdehne            #+#    #+#             */
-/*   Updated: 2022/07/09 18:53:20 by tdehne           ###   ########.fr       */
+/*   Updated: 2022/07/10 12:44:58 by tdehne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ void	make_mandel(t_pxl_data *pxl, t_graphic_vars *g_vars, t_vars *vars, t_mandel
 	g_vars->steps_y = 4.0 * g_vars->zoom / vars->win_height;
 	g_vars->w_x = - (4.0 * g_vars->zoom / 2)  + g_vars->offset_x;
 	tmp_wx = g_vars->w_x;
-	printf("%lf %lf\n", g_vars->w_x, g_vars->offset_x);
 	for (int i = 0; i < vars->win_width; i++)
 	{
 		g_vars->w_y = (4.0 * g_vars->zoom) / 2 + g_vars->offset_y;
@@ -63,7 +62,6 @@ void	make_mandel(t_pxl_data *pxl, t_graphic_vars *g_vars, t_vars *vars, t_mandel
 			mandel->c_r = g_vars->w_x;
 			mandel->z_i = 0.0;
 			mandel->z_r = 0.0;
-			printf("%lf %lf\n", g_vars->w_x, g_vars->w_y);
 			calc_mandel(mandel, i, j, pxl);
 			g_vars->w_y -= g_vars->steps_y;
 			pxl++;
@@ -110,25 +108,35 @@ void calc_mandel(t_mandel *mandel, t_graphic_vars *g_vars, t_pxl_data *pxl)
 	}
 }
 
-void	make_mandel(t_pxl_data *pxl, t_graphic_vars *g_vars, t_vars *vars, t_mandel *mandel)
+void	make_mandel(t_pxl_data *pxl, t_graphic_vars *g_vars, t_vars *vars, t_mandel *mandel, t_all_s *all_s)
 {
+	float	tmp_wy;
+	float	tmp_wx;
+	int		first;
+
+	first = 1;
 	g_vars->steps_x =  4.0 * g_vars->zoom / vars->win_width;
 	g_vars->steps_y = 4.0 * g_vars->zoom / vars->win_height;
-
 	for (g_vars->s_x = 0; g_vars->s_x < vars->win_width; g_vars->s_x++)
 	{
 		for (g_vars->s_y = 0; g_vars->s_y < vars->win_height; g_vars->s_y++)
 		{
-			screen_to_world(g_vars, vars);
-			screen_to_world(g_vars, vars);
+			screen_to_world(&g_vars->w_x, &g_vars->w_y, g_vars->s_x, g_vars->s_y, all_s);
+			if (first)
+			{
+				tmp_wx = g_vars->w_x;
+				tmp_wy = g_vars->w_y;
+				first = !first;
+			}
 			mandel->c_i = g_vars->w_y;
 			mandel->c_r = g_vars->w_x;
 			mandel->z_i = 0.0;
 			mandel->z_r = 0.0;
-			printf("%d %d\n", g_vars->s_x, g_vars->s_y);
 			calc_mandel(mandel, g_vars, pxl);
 			pxl++;
 		}
 	}
 	pxl->px = -1;
+	g_vars->w_y = tmp_wy;
+	g_vars->w_x = tmp_wx;
 }
