@@ -6,7 +6,7 @@
 /*   By: tdehne <tdehne@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 17:31:26 by tdehne            #+#    #+#             */
-/*   Updated: 2022/07/10 21:46:06 by tdehne           ###   ########.fr       */
+/*   Updated: 2022/07/11 14:50:47 by tdehne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void calc_mandel(t_mandel *mandel, t_graphic_vars *g_vars, t_pxl_data *pxl)
 	{
 		re = mandel->z_r * mandel->z_r - mandel->z_i * mandel->z_i + mandel->c_r;
 		im = 2 * mandel->z_r * mandel->z_i + mandel->c_i;
-		if (counter == 500){
+		if (counter == ITER_DEPTH){
 			pxl->counter = counter;
 			pxl->px = g_vars->s_x;
 			pxl->py = g_vars->s_y;
@@ -112,20 +112,23 @@ void	make_mandel(t_pxl_data *pxl, t_graphic_vars *g_vars, t_vars *vars, t_mandel
 {
 	float	tmp_wy;
 	float	tmp_wx;
-	int		first;
+	int		sx_start;
+	int		sy_start;
 
-	first = 1;
+	//sx_start = g_vars->zoom_x * vars->win_width / 2 - vars->win_width / 2;
+	//sy_start = g_vars->zoom_y * vars->win_height / 2 - vars->win_height / 2;
+	printf("%d %d\n", sx_start, sy_start);
 	for (g_vars->s_x = 0; g_vars->s_x < vars->win_width; g_vars->s_x++)
 	{
 		for (g_vars->s_y = 0; g_vars->s_y < vars->win_height; g_vars->s_y++)
 		{
 			screen_to_world(&g_vars->w_x, &g_vars->w_y, g_vars->s_x, g_vars->s_y, all_s->g_vars);
-			if (first)
+			/*if (first)
 			{
 				tmp_wx = g_vars->w_x;
 				tmp_wy = g_vars->w_y;
 				first = !first;
-			}
+			}*/
 			mandel->c_i = g_vars->w_y;
 			mandel->c_r = g_vars->w_x;
 			mandel->z_i = 0.0;
@@ -135,6 +138,6 @@ void	make_mandel(t_pxl_data *pxl, t_graphic_vars *g_vars, t_vars *vars, t_mandel
 		}
 	}
 	pxl->px = -1;
-	g_vars->w_y = tmp_wy;
-	g_vars->w_x = tmp_wx;
+	//g_vars->w_y = tmp_wy;
+	//g_vars->w_x = tmp_wx;
 }

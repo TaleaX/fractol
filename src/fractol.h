@@ -6,7 +6,7 @@
 /*   By: tdehne <tdehne@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 07:24:48 by tdehne            #+#    #+#             */
-/*   Updated: 2022/07/10 19:18:37 by tdehne           ###   ########.fr       */
+/*   Updated: 2022/07/11 15:20:54 by tdehne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ typedef struct	s_graphic_vars {
 	int		count;
 	double	zoom_x;
 	double	zoom_y;
+	double	def_scale_x;
+	double	def_scale_y;
 	double	offset_x;
 	double	offset_y;
 	double	steps_x;
@@ -54,6 +56,8 @@ typedef struct	s_graphic_vars {
 	double	m_wy_start;
 	int		s_x;
 	int		s_y;
+	int		m_sy;
+	int		m_sx;
 }				t_graphic_vars;
 
 typedef struct	s_pxl_data {

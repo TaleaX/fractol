@@ -6,7 +6,7 @@
 /*   By: tdehne <tdehne@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 07:19:22 by tdehne            #+#    #+#             */
-/*   Updated: 2022/07/10 21:49:12 by tdehne           ###   ########.fr       */
+/*   Updated: 2022/07/11 16:26:06 by tdehne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,17 +23,19 @@ void test(void *context){
 	tmp = all_s->pxl;
 	while (tmp->px != -1)
 	{
-		if (tmp->counter == 500)
+		if (tmp->counter == ITER_DEPTH)
 		{
 			mlx_put_pixel(all_s->img->img, tmp->px, tmp->py, 0x000000FF);
 		}
 		else
 		{
-			mlx_put_pixel(all_s->img->img, tmp->px, tmp->py, color(tmp->counter, 500, 5 * M_PI / 3 + sin(all_s->g_vars->count / 20.0) + 1, sin(all_s->g_vars->count / 20.0) + 1, 0));
+			mlx_put_pixel(all_s->img->img, tmp->px, tmp->py, color(tmp->counter, 500, 5 * M_PI / 3 + sin(all_s->g_vars->count / 20.0) + 1, sin(all_s->g_vars->count / 20.0) + 1 , 1));
 		}
 		(tmp)++;
 	}
 	//mlx_get_mouse_pos(all_s->vars->mlx, &all_s->mouse_x, &all_s->mouse_y);
+	//all_s->g_vars->m_sx = 300;
+	//all_s->g_vars->m_sy = 300;
 	mlx_image_to_window(all_s->vars->mlx, all_s->img->img, 0, 0);
 }
 
@@ -99,6 +101,11 @@ void mouse_press(mouse_key_t button, action_t action, modifier_key_t mods, void*
 		all_s->g_vars->offset_x += all_s->g_vars->m_wx_start;
 		all_s->g_vars->offset_y += all_s->g_vars->m_wy_start * (-1.0);
 	}
+	if (button == MLX_MOUSE_BUTTON_RIGHT && action == MLX_PRESS)
+	{
+		mlx_get_mouse_pos(all_s->vars->mlx, &all_s->g_vars->m_sx, &all_s->g_vars->m_sy);
+		
+	}
 	make_mandel(all_s->pxl, all_s->g_vars, all_s->vars, all_s->mandel, all_s);
 }
 
@@ -118,13 +125,14 @@ void	zoom(double xdelta, double ydelta, void* context)
 	int		m_sx;
 	int		m_sy;
 
-	mlx_get_mouse_pos(all_s->vars->mlx, &m_sx, &m_sy);
-	screen_to_world(&m_wx, &m_wy, m_sx, m_sy, all_s->g_vars);
-	
+	mlx_get_mouse_pos(all_s->vars->mlx, &all_s->g_vars->m_sx, &all_s->g_vars->m_sy);
+	//screen_to_world(&m_wx, &m_wy, m_sx, m_sy, all_s->g_vars);
 	
 	//all_s->g_vars->offset_x += (all_s->g_vars->m_wx_start - m_wx);
 	//all_s->g_vars->offset_y += (all_s->g_vars->m_wy_start - m_wy);
 	printf("%lf %lf %lf %lf\n", all_s->g_vars->offset_x, all_s->g_vars->offset_y, all_s->g_vars->m_wx_start, m_wx);
+	//all_s->g_vars->w_x = 0;
+	//all_s->g_vars->w_y = 0;
 	//m_wx = all_s->g_vars->steps_x * all_s->mouse_x + all_s->g_vars->w_x;
 	//m_wy = (all_s->mouse_y < all_s->vars->win_height / 2) ? (all_s->g_vars->w_y - all_s->g_vars->steps_y * all_s->mouse_y) : -(all_s->g_vars->steps_y * all_s->mouse_y - all_s->g_vars->w_y);
 
@@ -163,12 +171,16 @@ int main()
 	
 	vars.win_height = 600;
 	vars.win_width = 600;
-	g_vars.w_x = -2;
-	g_vars.w_y = 2;
-	g_vars.zoom_x = vars.win_width / 4.0;
-	g_vars.zoom_y = vars.win_height / 4.0;
+	//g_vars.w_x = -2;
+	//g_vars.w_y = -2;
+	g_vars.zoom_x = 1;
+	g_vars.zoom_y = 1;
 	g_vars.offset_x = 2;
 	g_vars.offset_y = 2;
+	g_vars.m_sx = 300;
+	g_vars.m_sy = 300;
+	g_vars.def_scale_x = vars.win_width / 4.0;
+	g_vars.def_scale_y = vars.win_height / 4.0;
 	all_s.g_vars = &g_vars;
 	all_s.pxl = pxl;
 	all_s.mandel = &mandel;
@@ -177,10 +189,10 @@ int main()
 	all_s.img = &img;
 	all_s.vars = &vars;
 	make_mandel(pxl, &g_vars, &vars, &mandel, &all_s);
-	mlx_loop_hook(vars.mlx, &test, &all_s);
 	//mlx_key_hook(vars.mlx, &my_keyhook, &all_s);
 	mlx_scroll_hook(vars.mlx, &zoom, &all_s);
 	mlx_mouse_hook(vars.mlx, &mouse_press, &all_s);
+	mlx_loop_hook(vars.mlx, &test, &all_s);
 	mlx_loop(vars.mlx);
 	mlx_terminate(vars.mlx);
 	return (EXIT_SUCCESS);
