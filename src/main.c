@@ -6,7 +6,7 @@
 /*   By: tdehne <tdehne@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 07:19:22 by tdehne            #+#    #+#             */
-/*   Updated: 2022/07/11 16:26:06 by tdehne           ###   ########.fr       */
+/*   Updated: 2022/07/17 19:22:54 by tdehne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void test(void *context){
 		}
 		else
 		{
-			mlx_put_pixel(all_s->img->img, tmp->px, tmp->py, color(tmp->counter, 500, 5 * M_PI / 3 + sin(all_s->g_vars->count / 20.0) + 1, sin(all_s->g_vars->count / 20.0) + 1 , 1));
+			mlx_put_pixel(all_s->img->img, tmp->px, tmp->py, color(tmp->counter, 500, 5 * M_PI / 3 + sin(all_s->g_vars->count / 20.0) + 1, sin(all_s->g_vars->count / 20.0) + 1, 1));
 		}
 		(tmp)++;
 	}
@@ -45,19 +45,19 @@ void my_keyhook(mlx_key_data_t keydata, void* context)
 	// If we PRESS the 'J' key, print "Hello".
 	if (keydata.key == MLX_KEY_RIGHT && keydata.action == MLX_PRESS)
 	{
-		all_s->g_vars->w_x -= 0.02;
+		all_s->g_vars->offset_x += 0.2;
 	}
 	if (keydata.key == MLX_KEY_LEFT && keydata.action == MLX_PRESS)
 	{
-		all_s->g_vars->w_x += 0.02;
+		all_s->g_vars->offset_x -= 0.2;
 	}
 	if (keydata.key == MLX_KEY_UP && keydata.action == MLX_PRESS)
 	{
-		all_s->g_vars->w_y += 0.02;
+		all_s->g_vars->offset_y -= 0.2;
 	}
 	if (keydata.key == MLX_KEY_DOWN && keydata.action == MLX_PRESS)
 	{
-		all_s->g_vars->w_y -= 0.02;
+		all_s->g_vars->offset_y += 0.2;
 		
 	}
 	make_mandel(all_s->pxl, all_s->g_vars, all_s->vars, all_s->mandel, all_s);
@@ -155,7 +155,7 @@ void	zoom(double xdelta, double ydelta, void* context)
 	make_mandel(all_s->pxl, all_s->g_vars, all_s->vars, all_s->mandel, all_s);
 }
 
-int main()
+int main(int argc, char *argv[])
 {
 	t_img			img;
 	t_mandel		mandel;
@@ -188,10 +188,16 @@ int main()
 	img.img = mlx_new_image(vars.mlx, vars.win_width, vars.win_height);
 	all_s.img = &img;
 	all_s.vars = &vars;
-	make_mandel(pxl, &g_vars, &vars, &mandel, &all_s);
-	//mlx_key_hook(vars.mlx, &my_keyhook, &all_s);
+	if (argc > 2)
+	{
+		mandel.c_r = atof(argv[1]);
+		mandel.c_i = atof(argv[2]);
+		printf("%s\n", argv[1]);
+	}
+	make_julia(pxl, &g_vars, &vars, &mandel, &all_s);
+	/*mlx_key_hook(vars.mlx, &my_keyhook, &all_s);
 	mlx_scroll_hook(vars.mlx, &zoom, &all_s);
-	mlx_mouse_hook(vars.mlx, &mouse_press, &all_s);
+	mlx_mouse_hook(vars.mlx, &mouse_press, &all_s);*/
 	mlx_loop_hook(vars.mlx, &test, &all_s);
 	mlx_loop(vars.mlx);
 	mlx_terminate(vars.mlx);

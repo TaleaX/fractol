@@ -6,7 +6,7 @@
 /*   By: tdehne <tdehne@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 07:24:48 by tdehne            #+#    #+#             */
-/*   Updated: 2022/07/11 15:20:54 by tdehne           ###   ########.fr       */
+/*   Updated: 2022/07/17 19:08:36 by tdehne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,9 @@ void	img_pix_put(t_img *img, int x, int y, int color);
 void	my_mlx_pixel_put(t_img *data, int x, int y, int color);
 int		color(int n, int max_value, double width, double offset, int reverse);
 void	make_mandel(t_pxl_data *pxl, t_graphic_vars *g_vars, t_vars *vars, t_mandel *mandel, t_all_s *all_s);
+void	make_julia(t_pxl_data *pxl, t_graphic_vars *g_vars, t_vars *vars, t_mandel *mandel, t_all_s *all_s);
 //void	make_mandel(t_all_s *all_s);
-void	make_julia(t_vars *vars, t_img *img);
+//void	make_julia(t_vars *vars, t_img *img);
 //void	screen_to_world(t_graphic_vars *g_vars, t_vars *vars);
 //void	world_to_screen(t_graphic_vars *g_vars);
 void	world_to_screen(int *s_x, int *s_y, double w_x, double w_y, t_graphic_vars *g_vars);
