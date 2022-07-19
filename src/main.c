@@ -6,7 +6,7 @@
 /*   By: tdehne <tdehne@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 07:19:22 by tdehne            #+#    #+#             */
-/*   Updated: 2022/07/17 19:22:54 by tdehne           ###   ########.fr       */
+/*   Updated: 2022/07/19 20:40:34 by tdehne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@
 void test(void *context){
 	t_all_s	*all_s = context;
 	t_pxl_data	*tmp;
-
+//+ sin(all_s->g_vars->count / 20.0) + 1
+//sin(all_s->g_vars->count / 20.0) + 1
 	(all_s->g_vars->count)++;
 	tmp = all_s->pxl;
 	while (tmp->px != -1)
@@ -29,7 +30,7 @@ void test(void *context){
 		}
 		else
 		{
-			mlx_put_pixel(all_s->img->img, tmp->px, tmp->py, color(tmp->counter, 500, 5 * M_PI / 3 + sin(all_s->g_vars->count / 20.0) + 1, sin(all_s->g_vars->count / 20.0) + 1, 1));
+			mlx_put_pixel(all_s->img->img, tmp->px, tmp->py, color(tmp->counter, 500, 5 * M_PI / 3 ,0 , 1));
 		}
 		(tmp)++;
 	}
@@ -130,7 +131,7 @@ void	zoom(double xdelta, double ydelta, void* context)
 	
 	//all_s->g_vars->offset_x += (all_s->g_vars->m_wx_start - m_wx);
 	//all_s->g_vars->offset_y += (all_s->g_vars->m_wy_start - m_wy);
-	printf("%lf %lf %lf %lf\n", all_s->g_vars->offset_x, all_s->g_vars->offset_y, all_s->g_vars->m_wx_start, m_wx);
+	//printf("%lf %lf %lf %lf\n", all_s->g_vars->offset_x, all_s->g_vars->offset_y, all_s->g_vars->m_wx_start, m_wx);
 	//all_s->g_vars->w_x = 0;
 	//all_s->g_vars->w_y = 0;
 	//m_wx = all_s->g_vars->steps_x * all_s->mouse_x + all_s->g_vars->w_x;
@@ -152,6 +153,7 @@ void	zoom(double xdelta, double ydelta, void* context)
 	}
 	//all_s->g_vars->m_wx_start = m_wx;
 	//all_s->g_vars->m_wy_start = m_wy;
+	//recalculate(all_s->pxl);
 	make_mandel(all_s->pxl, all_s->g_vars, all_s->vars, all_s->mandel, all_s);
 }
 
@@ -175,10 +177,12 @@ int main(int argc, char *argv[])
 	//g_vars.w_y = -2;
 	g_vars.zoom_x = 1;
 	g_vars.zoom_y = 1;
-	g_vars.offset_x = 2;
+	g_vars.offset_x = 3.8;
 	g_vars.offset_y = 2;
 	g_vars.m_sx = 300;
 	g_vars.m_sy = 300;
+	g_vars.m_wx_start = 0;
+	g_vars.m_wy_start = 0;
 	g_vars.def_scale_x = vars.win_width / 4.0;
 	g_vars.def_scale_y = vars.win_height / 4.0;
 	all_s.g_vars = &g_vars;
@@ -194,10 +198,10 @@ int main(int argc, char *argv[])
 		mandel.c_i = atof(argv[2]);
 		printf("%s\n", argv[1]);
 	}
-	make_julia(pxl, &g_vars, &vars, &mandel, &all_s);
-	/*mlx_key_hook(vars.mlx, &my_keyhook, &all_s);
+	make_mandel(pxl, &g_vars, &vars, &mandel, &all_s);
+	mlx_key_hook(vars.mlx, &my_keyhook, &all_s);
 	mlx_scroll_hook(vars.mlx, &zoom, &all_s);
-	mlx_mouse_hook(vars.mlx, &mouse_press, &all_s);*/
+	mlx_mouse_hook(vars.mlx, &mouse_press, &all_s);
 	mlx_loop_hook(vars.mlx, &test, &all_s);
 	mlx_loop(vars.mlx);
 	mlx_terminate(vars.mlx);

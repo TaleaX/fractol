@@ -6,13 +6,13 @@
 /*   By: tdehne <tdehne@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 07:24:48 by tdehne            #+#    #+#             */
-/*   Updated: 2022/07/17 19:08:36 by tdehne           ###   ########.fr       */
+/*   Updated: 2022/07/19 13:54:31 by tdehne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FRACTOL_H
 # define FRACTOL_H
-# define ITER_DEPTH 50
+# define ITER_DEPTH 100
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -61,9 +61,12 @@ typedef struct	s_graphic_vars {
 }				t_graphic_vars;
 
 typedef struct	s_pxl_data {
-	int	counter;
-	int px;
-	int	py;
+	int		counter;
+	int		px;
+	int		py;
+	float	wx;
+	float	wy;
+	int		recalc;
 }				t_pxl_data;
 
 typedef struct s_all_s {
@@ -85,5 +88,7 @@ void	make_julia(t_pxl_data *pxl, t_graphic_vars *g_vars, t_vars *vars, t_mandel 
 //void	world_to_screen(t_graphic_vars *g_vars);
 void	world_to_screen(int *s_x, int *s_y, double w_x, double w_y, t_graphic_vars *g_vars);
 void	screen_to_world(double *w_x, double *w_y, int s_x, int s_y, t_graphic_vars *g_vars);
+
+void	recalculate(t_pxl_data *pxl);
 
 #endif

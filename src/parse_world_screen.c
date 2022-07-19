@@ -6,7 +6,7 @@
 /*   By: tdehne <tdehne@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 17:45:22 by tdehne            #+#    #+#             */
-/*   Updated: 2022/07/11 15:25:39 by tdehne           ###   ########.fr       */
+/*   Updated: 2022/07/19 12:46:54 by tdehne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,5 @@ void	screen_to_world(double *w_x, double *w_y, int s_x, int s_y, t_graphic_vars 
 {
 	*w_x = (double)((s_x + g_vars->zoom_x * g_vars->m_sx - g_vars->m_sx) / (g_vars->def_scale_x * g_vars->zoom_x) - g_vars->offset_x);
 	*w_y = (double)(g_vars->offset_y - (s_y + g_vars->zoom_y * g_vars->m_sy - g_vars->m_sy) / (g_vars->def_scale_y * g_vars->zoom_y));
+		
 }

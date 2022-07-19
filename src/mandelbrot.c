@@ -6,7 +6,7 @@
 /*   By: tdehne <tdehne@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 17:31:26 by tdehne            #+#    #+#             */
-/*   Updated: 2022/07/17 19:03:47 by tdehne           ###   ########.fr       */
+/*   Updated: 2022/07/19 20:04:46 by tdehne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,67 +77,101 @@ void	make_mandel(t_pxl_data *pxl, t_graphic_vars *g_vars, t_vars *vars, t_mandel
 	g_vars->w_x = - 4.0 * (1 - g_vars->zoom) / 2  + g_vars->offset_x;*/
 
 
-void calc_mandel(t_mandel *mandel, t_graphic_vars *g_vars, t_pxl_data *pxl)
+void calc_mandel(t_pxl_data *pxl)
 {
 	double	re;
 	double	im;
-	int counter;
+	float	z_r;
+	float	z_i;
+	float	c_r;
+	float	c_i;
+	int 	counter;
 
 	counter = 0;
+	c_r = pxl->wx;
+	c_i = pxl->wy;
+	z_r = 0.0;
+	z_i = 0.0;
 	while (1)
 	{
-		re = mandel->z_r * mandel->z_r - mandel->z_i * mandel->z_i + mandel->c_r;
-		im = 2 * mandel->z_r * mandel->z_i + mandel->c_i;
+		re = z_r * z_r - z_i * z_i + c_r;
+		im = 2 * z_r * z_i + c_i;
 		if (counter == ITER_DEPTH){
 			pxl->counter = counter;
-			pxl->px = g_vars->s_x;
-			pxl->py = g_vars->s_y;
-			//my_mlx_pixel_put(img, px, py, 0x00000000);
+			pxl->recalc = 0;
 			break;
 		}
 		if (re*re + im*im > 4.0){
 			pxl->counter = counter;
-			pxl->px = g_vars->s_x;
-			pxl->py = g_vars->s_y;
-			//my_mlx_pixel_put(img, px, py, color(counter, 50, 5 * M_PI / 3 + sin(*count / 50.0) + 1, sin(*count / 50.0) + 1, 1));
+			pxl->recalc = 1;
 			break ;
 		}
-		mandel->z_r = re;
-		mandel->z_i = im;
+		z_r = re;
+		z_i = im;
 		counter++;
 	}
+	
 }
 
 void	make_mandel(t_pxl_data *pxl, t_graphic_vars *g_vars, t_vars *vars, t_mandel *mandel, t_all_s *all_s)
 {
-	float	tmp_wy;
-	float	tmp_wx;
-	int		sx_start;
-	int		sy_start;
-
-	//sx_start = g_vars->zoom_x * vars->win_width / 2 - vars->win_width / 2;
-	//sy_start = g_vars->zoom_y * vars->win_height / 2 - vars->win_height / 2;
-	printf("%d %d\n", sx_start, sy_start);
 	for (g_vars->s_x = 0; g_vars->s_x < vars->win_width; g_vars->s_x++)
 	{
 		for (g_vars->s_y = 0; g_vars->s_y < vars->win_height; g_vars->s_y++)
 		{
 			screen_to_world(&g_vars->w_x, &g_vars->w_y, g_vars->s_x, g_vars->s_y, all_s->g_vars);
-			/*if (first)
-			{
-				tmp_wx = g_vars->w_x;
-				tmp_wy = g_vars->w_y;
-				first = !first;
-			}*/
-			mandel->c_i = g_vars->w_y;
-			mandel->c_r = g_vars->w_x;
-			mandel->z_i = 0.0;
-			mandel->z_r = 0.0;
-			calc_mandel(mandel, g_vars, pxl);
+			pxl->wx = g_vars->w_x;
+			pxl->wy = g_vars->w_y;
+			pxl->px = g_vars->s_x;
+			pxl->py = g_vars->s_y;
+			calc_mandel(pxl);
 			pxl++;
 		}
 	}
 	pxl->px = -1;
-	//g_vars->w_y = tmp_wy;
-	//g_vars->w_x = tmp_wx;
+}
+
+int *get_edges(t_pxl_data *pxl)
+{
+	int	*ind;
+	int	i;
+	int	col;
+	int	row;
+
+	ind = (int *)malloc(sizeof(int) * 2);
+	i = 0;
+	while (pxl[i].px != -1)
+	{
+		row = i / 600;
+		if (pxl[i].counter == ITER_DEPTH)
+		{
+			*ind = row - 1;
+			break ;
+		}
+		i++;
+	}
+	ind++;
+	while (pxl[i].px != -1)
+	{
+		row = i / 600;
+		if (pxl[i].counter == ITER_DEPTH)
+		{
+			*ind = row - 1;
+		}
+		i++;
+	}
+	return (ind);
+}
+
+void	recalculate(t_pxl_data *pxl)
+{
+	int	i;
+
+	i = 0;
+	while ((pxl + i)->px != -1)
+	{
+		if ((pxl + i)->recalc)
+			calc_mandel(pxl + i);
+		i++;
+	}
 }
