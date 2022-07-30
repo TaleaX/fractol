@@ -6,7 +6,7 @@
 /*   By: tdehne <tdehne@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 07:24:48 by tdehne            #+#    #+#             */
-/*   Updated: 2022/07/19 13:54:31 by tdehne           ###   ########.fr       */
+/*   Updated: 2022/07/30 14:33:49 by tdehne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 #include <stdio.h>
 #include <unistd.h>
 #include "../mlx_new/include/MLX42/MLX42.h"
+
+# define ABS(num) (num < 0 ? num * - 1 : num)
 
 typedef struct s_mandel {
 	float	c_r;
@@ -58,6 +60,14 @@ typedef struct	s_graphic_vars {
 	int		s_y;
 	int		m_sy;
 	int		m_sx;
+	double	delta_re;
+	double	delta_im;
+	double	re_max;
+	double	re_min;
+	double	im_max;
+	double	im_min;
+	double	step_size;
+
 }				t_graphic_vars;
 
 typedef struct	s_pxl_data {

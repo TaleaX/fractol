@@ -6,7 +6,7 @@
 /*   By: tdehne <tdehne@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 17:31:26 by tdehne            #+#    #+#             */
-/*   Updated: 2022/07/19 20:04:46 by tdehne           ###   ########.fr       */
+/*   Updated: 2022/07/30 15:01:21 by tdehne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,10 @@ void	make_mandel(t_pxl_data *pxl, t_graphic_vars *g_vars, t_vars *vars, t_mandel
 	{
 		for (g_vars->s_y = 0; g_vars->s_y < vars->win_height; g_vars->s_y++)
 		{
-			screen_to_world(&g_vars->w_x, &g_vars->w_y, g_vars->s_x, g_vars->s_y, all_s->g_vars);
+			//screen_to_world(&g_vars->w_x, &g_vars->w_y, g_vars->s_x, g_vars->s_y, all_s->g_vars);
+			if (g_vars->s_x == 0 && g_vars->s_y == 0 || g_vars->s_x == vars->win_width && g_vars->s_y == vars->win_width)
+				printf("%lf %lf\n", g_vars->w_x, g_vars->w_y);
+			
 			pxl->wx = g_vars->w_x;
 			pxl->wy = g_vars->w_y;
 			pxl->px = g_vars->s_x;
@@ -131,7 +134,7 @@ void	make_mandel(t_pxl_data *pxl, t_graphic_vars *g_vars, t_vars *vars, t_mandel
 	pxl->px = -1;
 }
 
-int *get_edges(t_pxl_data *pxl)
+/*int *get_edges(t_pxl_data *pxl)
 {
 	int	*ind;
 	int	i;
@@ -174,4 +177,4 @@ void	recalculate(t_pxl_data *pxl)
 			calc_mandel(pxl + i);
 		i++;
 	}
-}
+}*/

@@ -6,7 +6,7 @@
 /*   By: tdehne <tdehne@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 07:19:22 by tdehne            #+#    #+#             */
-/*   Updated: 2022/07/19 20:40:34 by tdehne           ###   ########.fr       */
+/*   Updated: 2022/07/30 14:58:55 by tdehne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,7 @@
 void test(void *context){
 	t_all_s	*all_s = context;
 	t_pxl_data	*tmp;
-//+ sin(all_s->g_vars->count / 20.0) + 1
-//sin(all_s->g_vars->count / 20.0) + 1
+
 	(all_s->g_vars->count)++;
 	tmp = all_s->pxl;
 	while (tmp->px != -1)
@@ -30,7 +29,7 @@ void test(void *context){
 		}
 		else
 		{
-			mlx_put_pixel(all_s->img->img, tmp->px, tmp->py, color(tmp->counter, 500, 5 * M_PI / 3 ,0 , 1));
+			mlx_put_pixel(all_s->img->img, tmp->px, tmp->py, color(tmp->counter, 500, 5 * M_PI / 3 + sin(all_s->g_vars->count / 20.0) + 1, sin(all_s->g_vars->count / 20.0) + 1, 1));
 		}
 		(tmp)++;
 	}
@@ -119,41 +118,51 @@ float	abs_f(float num)
 void	zoom(double xdelta, double ydelta, void* context)
 {
 	t_all_s	*all_s = context;
-	double	offset_x;
-	double	offset_y;
-	double	m_wx;
-	double	m_wy;
-	int		m_sx;
-	int		m_sy;
+	double	dd_re;
+	double	dd_im;
+	double	x_ratio;
+	double	y_ratio;
 
 	mlx_get_mouse_pos(all_s->vars->mlx, &all_s->g_vars->m_sx, &all_s->g_vars->m_sy);
-	//screen_to_world(&m_wx, &m_wy, m_sx, m_sy, all_s->g_vars);
-	
-	//all_s->g_vars->offset_x += (all_s->g_vars->m_wx_start - m_wx);
-	//all_s->g_vars->offset_y += (all_s->g_vars->m_wy_start - m_wy);
-	//printf("%lf %lf %lf %lf\n", all_s->g_vars->offset_x, all_s->g_vars->offset_y, all_s->g_vars->m_wx_start, m_wx);
-	//all_s->g_vars->w_x = 0;
-	//all_s->g_vars->w_y = 0;
-	//m_wx = all_s->g_vars->steps_x * all_s->mouse_x + all_s->g_vars->w_x;
-	//m_wy = (all_s->mouse_y < all_s->vars->win_height / 2) ? (all_s->g_vars->w_y - all_s->g_vars->steps_y * all_s->mouse_y) : -(all_s->g_vars->steps_y * all_s->mouse_y - all_s->g_vars->w_y);
+	x_ratio = (double)(all_s->g_vars->m_sx) / 600.0;
+	y_ratio = (double)(all_s->g_vars->m_sy) / 600.0;
+	if (all_s->g_vars->m_sx == 0)
+		x_ratio = 1.0;
+	if (all_s->g_vars->m_sy == 0)
+		y_ratio = 1.0;
 
 	if (ydelta > 0)
 	{
-		//all_s->g_vars->offset_x -= ((float)all_s->mouse_x / all_s->vars->win_width);
-		//all_s->g_vars->offset_y -= ((float)all_s->mouse_y / all_s->vars->win_height);
-		all_s->g_vars->zoom_x *= 0.9;
-		all_s->g_vars->zoom_y *= 0.9;
+		all_s->g_vars->zoom_x *= 1.1;
+		all_s->g_vars->zoom_y *= 1.1;
+		dd_re = all_s->g_vars->zoom_x * all_s->g_vars->delta_re - all_s->g_vars->delta_re;
+		dd_im = all_s->g_vars->zoom_y * all_s->g_vars->delta_im - all_s->g_vars->delta_im;
 	}
 	else
 	{
-		//all_s->g_vars->offset_x += ((float)all_s->mouse_x / all_s->vars->win_width);
-		//all_s->g_vars->offset_y += ((float)all_s->mouse_y / all_s->vars->win_height);
-		all_s->g_vars->zoom_x *= 1.1;
-		all_s->g_vars->zoom_y *= 1.1;
+		all_s->g_vars->zoom_x *= 0.9;
+		all_s->g_vars->zoom_y *= 0.9;
+		dd_re = (1 / all_s->g_vars->zoom_x) * all_s->g_vars->delta_re - all_s->g_vars->delta_re;
+		dd_im = (1 / all_s->g_vars->zoom_y) * all_s->g_vars->delta_im - all_s->g_vars->delta_im;
+		
 	}
-	//all_s->g_vars->m_wx_start = m_wx;
-	//all_s->g_vars->m_wy_start = m_wy;
-	//recalculate(all_s->pxl);
+	//all_s->g_vars->delta_im *= all_s->g_vars->zoom_y;
+	//all_s->g_vars->delta_re *= all_s->g_vars->zoom_x;
+	
+	
+	all_s->g_vars->re_min -= dd_re * x_ratio;
+	all_s->g_vars->re_max += dd_re * (1 - x_ratio);
+	all_s->g_vars->im_min -= dd_im * (1 - x_ratio);
+	all_s->g_vars->im_max += dd_im * (x_ratio);
+
+	all_s->g_vars->delta_re = all_s->g_vars->re_max - all_s->g_vars->re_min;
+	all_s->g_vars->delta_re = all_s->g_vars->im_max - all_s->g_vars->im_min;
+
+	all_s->g_vars->offset_x = fabs(all_s->g_vars->re_min);
+	all_s->g_vars->offset_y = fabs(all_s->g_vars->im_max);
+	
+	all_s->g_vars->steps_x = all_s->g_vars->delta_re / 600.0;
+	all_s->g_vars->steps_y = all_s->g_vars->delta_im / 600.0;
 	make_mandel(all_s->pxl, all_s->g_vars, all_s->vars, all_s->mandel, all_s);
 }
 
@@ -177,14 +186,22 @@ int main(int argc, char *argv[])
 	//g_vars.w_y = -2;
 	g_vars.zoom_x = 1;
 	g_vars.zoom_y = 1;
-	g_vars.offset_x = 3.8;
+	g_vars.offset_x = 2;
 	g_vars.offset_y = 2;
-	g_vars.m_sx = 300;
-	g_vars.m_sy = 300;
+	g_vars.delta_re = 4.0;
+	g_vars.delta_im = 4.0;
+	g_vars.re_min = -2;
+	g_vars.re_max = 2;
+	g_vars.im_max = 2;
+	g_vars.im_min = -2;
+	g_vars.m_sx = 0;
+	g_vars.m_sy = 0;
 	g_vars.m_wx_start = 0;
 	g_vars.m_wy_start = 0;
 	g_vars.def_scale_x = vars.win_width / 4.0;
 	g_vars.def_scale_y = vars.win_height / 4.0;
+	g_vars.steps_x = 4.0 / vars.win_width;
+	g_vars.steps_y = 4.0 / vars.win_height;
 	all_s.g_vars = &g_vars;
 	all_s.pxl = pxl;
 	all_s.mandel = &mandel;
