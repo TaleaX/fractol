@@ -6,7 +6,7 @@
 /*   By: tdehne <tdehne@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 17:45:22 by tdehne            #+#    #+#             */
-/*   Updated: 2022/07/30 15:02:45 by tdehne           ###   ########.fr       */
+/*   Updated: 2022/07/30 15:14:50 by tdehne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,10 @@ void	screen_to_world(double *w_x, double *w_y, int s_x, int s_y, t_graphic_vars 
 	// + g_vars->zoom_y * g_vars->m_sy - g_vars->m_sy
 
 	//printf("%lf %lf %lf\n", g_vars->re_min, g_vars->steps_x, g_vars->delta_re);
-	*w_x = (double)(g_vars->re_min + s_x * g_vars->steps_x);
-	*w_y = (double)(g_vars->im_min - s_y * g_vars->steps_y);
+	
+	*w_x = (double)(s_x * g_vars->steps_x + g_vars->re_min);
+	*w_y = (double)(s_y * g_vars->steps_y + g_vars->im_min);
+	//printf("%lf %lf\n", *w_x, *w_y);
 	//*w_x = (double)((s_x) / (g_vars->def_scale_x * g_vars->zoom_x) - g_vars->offset_x * x_ratio);
 	//*w_y = (double)(g_vars->offset_y * y_ratio - (s_y) / (g_vars->def_scale_y * g_vars->zoom_y));
 }
