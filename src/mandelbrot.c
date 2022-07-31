@@ -6,7 +6,7 @@
 /*   By: tdehne <tdehne@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 17:31:26 by tdehne            #+#    #+#             */
-/*   Updated: 2022/07/30 15:06:54 by tdehne           ###   ########.fr       */
+/*   Updated: 2022/07/30 20:29:10 by tdehne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ void calc_mandel(t_pxl_data *pxl)
 	
 }
 
-void	make_mandel(t_pxl_data *pxl, t_graphic_vars *g_vars, t_vars *vars, t_mandel *mandel, t_all_s *all_s)
+/*void	make_mandel(t_pxl_data *pxl, t_graphic_vars *g_vars, t_vars *vars, t_mandel *mandel, t_all_s *all_s)
 {
 	for (g_vars->s_x = 0; g_vars->s_x < vars->win_width; g_vars->s_x++)
 	{
@@ -132,49 +132,22 @@ void	make_mandel(t_pxl_data *pxl, t_graphic_vars *g_vars, t_vars *vars, t_mandel
 		}
 	}
 	pxl->px = -1;
-}
-
-/*int *get_edges(t_pxl_data *pxl)
-{
-	int	*ind;
-	int	i;
-	int	col;
-	int	row;
-
-	ind = (int *)malloc(sizeof(int) * 2);
-	i = 0;
-	while (pxl[i].px != -1)
-	{
-		row = i / 600;
-		if (pxl[i].counter == ITER_DEPTH)
-		{
-			*ind = row - 1;
-			break ;
-		}
-		i++;
-	}
-	ind++;
-	while (pxl[i].px != -1)
-	{
-		row = i / 600;
-		if (pxl[i].counter == ITER_DEPTH)
-		{
-			*ind = row - 1;
-		}
-		i++;
-	}
-	return (ind);
-}
-
-void	recalculate(t_pxl_data *pxl)
-{
-	int	i;
-
-	i = 0;
-	while ((pxl + i)->px != -1)
-	{
-		if ((pxl + i)->recalc)
-			calc_mandel(pxl + i);
-		i++;
-	}
 }*/
+
+void	make_mandel(t_pxl_data *pxl, t_graphic_vars *g_vars, t_vars *vars, t_mandel *mandel, t_all_s *all_s)
+{
+	g_vars->steps_x = g_vars->delta_re / vars->win_width;
+	//g_vars->steps_y = g_vars->delta_im / vars->win_height;
+	for (g_vars->s_x = 0; g_vars->s_x < vars->win_width; g_vars->s_x++)
+	{
+		for (g_vars->s_y = 0; g_vars->s_y < vars->win_height; g_vars->s_y++)
+		{	
+			pxl->wx = g_vars->re_min + (g_vars->s_x * g_vars->steps_x);
+			pxl->wy = g_vars->im_max - (g_vars->s_y * g_vars->steps_x);
+			pxl->px = g_vars->s_x;
+			pxl->py = g_vars->s_y;
+			calc_mandel(pxl);
+			pxl++;
+		}
+	}
+}

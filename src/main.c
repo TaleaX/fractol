@@ -6,7 +6,7 @@
 /*   By: tdehne <tdehne@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 07:19:22 by tdehne            #+#    #+#             */
-/*   Updated: 2022/07/30 14:58:55 by tdehne           ###   ########.fr       */
+/*   Updated: 2022/07/31 16:28:17 by tdehne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,106 +63,57 @@ void my_keyhook(mlx_key_data_t keydata, void* context)
 	make_mandel(all_s->pxl, all_s->g_vars, all_s->vars, all_s->mandel, all_s);
 }
 
-/*void mouse_press(mouse_key_t button, action_t action, modifier_key_t mods, void* context)
+void	zoom_math(t_all_s *all_s, int scale_dir)
 {
-	t_all_s	*all_s = context;
-	float	m_wx;
-	float	m_wy;
-		
-	if (mlx_is_mouse_down(all_s->vars->mlx, MLX_MOUSE_BUTTON_LEFT))
-	{
-		mlx_get_mouse_pos(all_s->vars->mlx, &all_s->mouse_x, &all_s->mouse_y);
-		m_wx = all_s->g_vars->steps_x * all_s->mouse_x + all_s->g_vars->w_x;
-		m_wy = (all_s->mouse_y < all_s->vars->win_height / 2) ? (all_s->g_vars->w_y - all_s->g_vars->steps_y * all_s->mouse_y) : -(all_s->g_vars->steps_y * all_s->mouse_y - all_s->g_vars->w_y);
-		printf("%lf %lf %d %d %lf %lf\n", m_wx, m_wy, all_s->mouse_x, all_s->mouse_y, all_s->g_vars->w_y, all_s->g_vars->w_x);
-		if (m_wx < 0)
-			all_s->g_vars->offset_x += m_wx * (-1.0);
-		else
-			all_s->g_vars->offset_x += m_wx * (-1.0);
-		if (m_wy < 0)
-			all_s->g_vars->offset_y += m_wy * (-1.0);
-		else
-			all_s->g_vars->offset_y += m_wy * (-1.0);
-	}
-	make_mandel(all_s->pxl, all_s->g_vars, all_s->vars, all_s->mandel, all_s);
-	printf("%lf %lf %d %d %lf %lf\n", m_wx, m_wy, all_s->mouse_x, all_s->mouse_y, all_s->g_vars->w_y, all_s->g_vars->w_x);
-}*/
-
-void mouse_press(mouse_key_t button, action_t action, modifier_key_t mods, void* context)
-{
-	t_all_s	*all_s = context;
-	int	m_sx;
-	int	m_sy;
-
-	if (button == MLX_MOUSE_BUTTON_LEFT && action == MLX_PRESS)
-	{
-		mlx_get_mouse_pos(all_s->vars->mlx, &m_sx, &m_sy);
-		screen_to_world(&all_s->g_vars->m_wx_start, &all_s->g_vars->m_wy_start, m_sx, m_sy, all_s->g_vars);
-		all_s->g_vars->offset_x += all_s->g_vars->m_wx_start;
-		all_s->g_vars->offset_y += all_s->g_vars->m_wy_start * (-1.0);
-	}
-	if (button == MLX_MOUSE_BUTTON_RIGHT && action == MLX_PRESS)
-	{
-		mlx_get_mouse_pos(all_s->vars->mlx, &all_s->g_vars->m_sx, &all_s->g_vars->m_sy);
-		
-	}
-	make_mandel(all_s->pxl, all_s->g_vars, all_s->vars, all_s->mandel, all_s);
-}
-
-float	abs_f(float num)
-{
-	if (num < 0)
-		return (-num);
-	return (num);
-}
-void	zoom(double xdelta, double ydelta, void* context)
-{
-	t_all_s	*all_s = context;
 	double	dd_re;
 	double	dd_im;
 	double	x_ratio;
 	double	y_ratio;
 
 	mlx_get_mouse_pos(all_s->vars->mlx, &all_s->g_vars->m_sx, &all_s->g_vars->m_sy);
-	x_ratio = (double)(all_s->g_vars->m_sx) / 600.0;
-	y_ratio = (double)(all_s->g_vars->m_sy) / 600.0;
+	x_ratio = (double)(all_s->g_vars->m_sx) / all_s->vars->win_width;
+	y_ratio = (double)(all_s->g_vars->m_sy) / all_s->vars->win_height;
 	if (all_s->g_vars->m_sx == 0)
 		x_ratio = 1.0;
 	if (all_s->g_vars->m_sy == 0)
 		y_ratio = 1.0;
-
-	if (ydelta > 0)
+	all_s->g_vars->delta_re = all_s->g_vars->re_max - all_s->g_vars->re_min;
+	all_s->g_vars->delta_im = all_s->g_vars->im_max - all_s->g_vars->im_min;
+	if (scale_dir == 1)
 	{
-		all_s->g_vars->zoom_x *= 1.1;
-		all_s->g_vars->zoom_y *= 1.1;
-		dd_re = all_s->g_vars->zoom_x * all_s->g_vars->delta_re - all_s->g_vars->delta_re;
-		dd_im = all_s->g_vars->zoom_y * all_s->g_vars->delta_im - all_s->g_vars->delta_im;
+		dd_re = (all_s->g_vars->zoom_x * all_s->g_vars->delta_re) - all_s->g_vars->delta_re;
+		dd_im = (all_s->g_vars->zoom_y * all_s->g_vars->delta_im) - all_s->g_vars->delta_im;
 	}
 	else
 	{
-		all_s->g_vars->zoom_x *= 0.9;
-		all_s->g_vars->zoom_y *= 0.9;
-		dd_re = (1 / all_s->g_vars->zoom_x) * all_s->g_vars->delta_re - all_s->g_vars->delta_re;
-		dd_im = (1 / all_s->g_vars->zoom_y) * all_s->g_vars->delta_im - all_s->g_vars->delta_im;
-		
+		dd_re = (all_s->g_vars->zoom_x * all_s->g_vars->delta_re) - all_s->g_vars->delta_re;
+		dd_im = (all_s->g_vars->zoom_y * all_s->g_vars->delta_im) - all_s->g_vars->delta_im;
 	}
-	//all_s->g_vars->delta_im *= all_s->g_vars->zoom_y;
-	//all_s->g_vars->delta_re *= all_s->g_vars->zoom_x;
-	
-	
 	all_s->g_vars->re_min -= dd_re * x_ratio;
 	all_s->g_vars->re_max += dd_re * (1 - x_ratio);
-	all_s->g_vars->im_min -= dd_im * (1 - x_ratio);
-	all_s->g_vars->im_max += dd_im * (x_ratio);
-
+	all_s->g_vars->im_max += dd_im * y_ratio;
+	all_s->g_vars->im_min -= dd_im * (1 - y_ratio);
 	all_s->g_vars->delta_re = all_s->g_vars->re_max - all_s->g_vars->re_min;
-	all_s->g_vars->delta_re = all_s->g_vars->im_max - all_s->g_vars->im_min;
+	all_s->g_vars->delta_im = all_s->g_vars->im_max - all_s->g_vars->im_min;
+}
 
-	all_s->g_vars->offset_x = fabs(all_s->g_vars->re_min);
-	all_s->g_vars->offset_y = fabs(all_s->g_vars->im_max);
-	
-	all_s->g_vars->steps_x = all_s->g_vars->delta_re / 600.0;
-	all_s->g_vars->steps_y = all_s->g_vars->delta_im / 600.0;
+void	zoom(double xdelta, double ydelta, void* context)
+{
+	t_all_s	*all_s = context;
+
+	if (ydelta > 0)
+	{
+		all_s->g_vars->zoom_x *= 0.9;
+		all_s->g_vars->zoom_y *= 0.9;
+		zoom_math(all_s, 1);
+	}
+	else
+	{
+		all_s->g_vars->zoom_x *= 1.1;
+		all_s->g_vars->zoom_y *= 1.1;
+		zoom_math(all_s, -1);
+		
+	}
 	make_mandel(all_s->pxl, all_s->g_vars, all_s->vars, all_s->mandel, all_s);
 }
 
