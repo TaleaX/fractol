@@ -6,7 +6,7 @@
 /*   By: tdehne <tdehne@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 17:32:08 by tdehne            #+#    #+#             */
-/*   Updated: 2022/07/17 19:19:40 by tdehne           ###   ########.fr       */
+/*   Updated: 2022/08/23 16:09:44 by tdehne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@
 	}
 }*/
 
-void calc_julia(t_mandel *mandel, t_graphic_vars *g_vars, t_pxl_data *pxl)
+void calc_julia(t_fractals *julia, t_graphic_vars *g_vars, t_pxl_data *pxl)
 {
 	double	re;
 	double	im;
@@ -47,8 +47,8 @@ void calc_julia(t_mandel *mandel, t_graphic_vars *g_vars, t_pxl_data *pxl)
 	counter = 0;
 	while (1)
 	{
-		re = mandel->z_r * mandel->z_r - mandel->z_i * mandel->z_i + mandel->c_r;
-		im = 2 * mandel->z_r * mandel->z_i + mandel->c_i;
+		re = julia->z_r * julia->z_r - julia->z_i * julia->z_i + julia->c_r;
+		im = 2 * julia->z_r * julia->z_i + julia->c_i;
 		if (counter == ITER_DEPTH){
 			pxl->counter = counter;
 			pxl->px = g_vars->s_x;
@@ -61,8 +61,8 @@ void calc_julia(t_mandel *mandel, t_graphic_vars *g_vars, t_pxl_data *pxl)
 			pxl->py = g_vars->s_y;
 			break ;
 		}
-		mandel->z_r = re;
-		mandel->z_i = im;
+		julia->z_r = re;
+		julia->z_i = im;
 		counter++;
 	}
 }
@@ -89,7 +89,7 @@ void calc_julia(t_mandel *mandel, t_graphic_vars *g_vars, t_pxl_data *pxl)
 	}
 }*/
 
-void	make_julia(t_pxl_data *pxl, t_graphic_vars *g_vars, t_vars *vars, t_mandel *mandel, t_all_s *all_s)
+void	make_julia(t_pxl_data *pxl, t_graphic_vars *g_vars, t_vars *vars, t_fractals *julia, t_all_s *all_s)
 {
 	float	tmp_wy;
 	float	tmp_wx;
@@ -100,10 +100,10 @@ void	make_julia(t_pxl_data *pxl, t_graphic_vars *g_vars, t_vars *vars, t_mandel 
 	{
 		for (g_vars->s_y = 0; g_vars->s_y < vars->win_height; g_vars->s_y++)
 		{
-			screen_to_world(&g_vars->w_x, &g_vars->w_y, g_vars->s_x, g_vars->s_y, all_s->g_vars);
-			mandel->z_i = g_vars->w_y;
-			mandel->z_r = g_vars->w_x;
-			calc_julia(mandel, g_vars, pxl);
+			screen_to_world(all_s->g_vars);
+			julia->z_i = g_vars->w_y;
+			julia->z_r = g_vars->w_x;
+			calc_julia(julia, g_vars, pxl);
 			pxl++;
 		}
 	}
