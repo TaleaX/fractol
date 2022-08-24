@@ -6,13 +6,12 @@
 /*   By: tdehne <tdehne@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 07:24:48 by tdehne            #+#    #+#             */
-/*   Updated: 2022/08/23 17:23:22 by tdehne           ###   ########.fr       */
+/*   Updated: 2022/08/24 18:00:09 by tdehne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FRACTOL_H
 # define FRACTOL_H
-# define ITER_DEPTH 50
 # define ERROR -1
 #include <math.h>
 #include <stdlib.h>
@@ -21,10 +20,8 @@
 #include "../mlx_new/include/MLX42/MLX42.h"
 #include "libft.h"
 
-# define ABS(num) (num < 0 ? num * - 1 : num)
-
 typedef	enum s_frac_type {
-	MANDEL = 1,
+	MANDEL,
 	JULIA,
 	BSHIP
 }	t_frac_type;
@@ -42,6 +39,9 @@ typedef struct	s_vars {
 	int		win_height;
 	int		win_width;
 	int		iter_depth;
+	int		color_width;
+	int		color_offset;
+	int		color_reverse;
 }				t_vars;
 
 typedef struct	s_graphic_vars {
@@ -65,35 +65,38 @@ typedef struct	s_pxl_data {
 }				t_pxl_data;
 
 typedef struct s_fractals {
-	double	z_r;
-	double	z_i;
-	double	c_r;
-	double	c_i;
+	double		z_r;
+	double		z_i;
+	double		c_r;
+	double		c_i;
+	t_frac_type	frac_type;
 } t_fractals;
 
-typedef struct s_all_s {
+typedef struct s_all_s t_all_s;
+
+typedef void	(*t_calc) (t_pxl_data *pxl, t_all_s *all_s);
+
+struct s_all_s {
 	t_graphic_vars 	*g_vars;
 	t_pxl_data 		*pxl;
 	t_vars			*vars;
 	t_img			*img;
 	t_fractals		*fractal;
-	t_frac_type		frac_type;
-} t_all_s;
+	t_calc			*calc;
+};
 
-typedef void	(*t_calc) (t_pxl_data *pxl, t_graphic_vars *g_vars, t_vars *vars, t_fractals *fractals, t_all_s *all_s);
 
 void	img_pix_put(t_img *img, int x, int y, int color);
 void	my_mlx_pixel_put(t_img *data, int x, int y, int color);
+//coloring
 int		color(int n, int max_value, double width, double offset, int reverse);
-void	make_mandel(t_pxl_data *pxl, t_graphic_vars *g_vars, t_vars *vars, t_fractals *mandel, t_all_s *all_s);
-void	make_julia(t_pxl_data *pxl, t_graphic_vars *g_vars, t_vars *vars, t_fractals *julia, t_all_s *all_s);
-//void	make_mandel(t_all_s *all_s);
-//void	make_julia(t_vars *vars, t_img *img);
-//void	screen_to_world(t_graphic_vars *g_vars, t_vars *vars);
-//void	world_to_screen(t_graphic_vars *g_vars);
-void	world_to_screen(int *s_x, int *s_y, double w_x, double w_y, t_graphic_vars *g_vars);
+void	make_mandel(t_pxl_data *pxl, t_all_s *all_s);
+void	make_julia(t_pxl_data *pxl, t_all_s *all_s);
 void	screen_to_world(t_graphic_vars *g_vars);
+void	make_bship(t_pxl_data *pxl, t_all_s *all_s);
 
-void	recalculate(t_pxl_data *pxl);
+//init
+int		init_vars(t_all_s all_s, char **argv);
+int		get_fractal_type(char **argv);
 
 #endif
