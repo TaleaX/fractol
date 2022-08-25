@@ -5,34 +5,33 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tdehne <tdehne@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/01 17:30:08 by tdehne            #+#    #+#             */
-/*   Updated: 2022/08/24 17:20:37 by tdehne           ###   ########.fr       */
+/*   Created: 2022/08/25 17:08:49 by tdehne            #+#    #+#             */
+/*   Updated: 2022/08/25 17:23:06 by tdehne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-static int get_rgba(int r, int g, int b, int a)
+void	color_mandel(t_pxl_data *pxl, t_all_s *all_s)
 {
-    return (r << 24 | g << 16 | b << 8 | a);
+	all_s->color.width = all_s->vars->color_width * M_PI / 3 \
+		+ sin(all_s->g_vars->count / 20.0) + 1;
+	all_s->color.offset = all_s->vars->color_offset * M_PI / 3 \
+		+ sin(all_s->g_vars->count / 20.0) + 1;
+	all_s->color.reverse = all_s->vars->color_reverse;
+	if (pxl->px < all_s->vars->win_width && pxl->px >= 0
+		&& pxl->py < all_s->vars->win_height && pxl->py >= 0)
+		mlx_put_pixel(all_s->img->img, pxl->px, pxl->py, \
+			color(pxl->counter, 50, all_s->color));
 }
 
-int	color(int n, int max_value, double width, double offset, int reverse)
+void	color_bship(t_pxl_data *pxl, t_all_s *all_s)
 {
-	double	a;
-	int		r;
-	int		g;
-	int		b;
-	int		color;
-
-	a = reverse ? (width * (max_value - n) / max_value + M_PI / 2 + offset) : (width * n / max_value + M_PI / 2 + offset);
-	r = sin(a) * 192 + 128;
-	r = (r < 0) ? 0 : ((r > 255) ? 255 : r);
-	g = sin(a - (2 * M_PI) / 3) * 192 + 128;
-	g = (g < 0) ? 0 : ((g > 255) ? 255 : g);
-	b = sin(a - (4 * M_PI) / 3) * 192 + 128;
-	b = (b < 0) ? 0 : ((b > 255) ? 255 : b);
-	color = get_rgba(r, g, b, 255);
-	//(((((0x00 << 8) | r) << 8) | g) << 8) | b;
-	return (color);
+	all_s->color.width = all_s->vars->color_width * M_PI / 3;
+	all_s->color.offset = all_s->vars->color_offset * M_PI / 3;
+	all_s->color.reverse = all_s->vars->color_reverse;
+	if (pxl->px < all_s->vars->win_width && pxl->px >= 0
+		&& pxl->py < all_s->vars->win_height && pxl->py >= 0)
+		mlx_put_pixel(all_s->img->img, pxl->px, pxl->py, \
+			color(pxl->counter, all_s->vars->iter_depth, all_s->color));
 }

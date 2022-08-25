@@ -1,7 +1,7 @@
 CC=cc
 CFLAGS=-Wall -Wextra -Werror -Ofast
 SRC_DIR=src/
-SRC_NAME=main.c graphic_utils.c mandelbrot.c coloring.c parse_world_screen.c julia.c init.c bship.c
+SRC_NAME=main.c mandelbrot.c coloring_alg.c parse_world_screen.c julia.c init.c bship.c coloring.c utils.c ft_atof.c
 SRC=$(addprefix $(SRC_DIR),$(SRC_NAME))
 SRC_OLD_DIR := src_oldmlx/
 SRC_OLD := $(addprefix $(SRC_OLD_DIR),$(SRC_NAME))

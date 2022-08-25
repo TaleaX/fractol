@@ -1,24 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   input.c                                            :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tdehne <tdehne@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/23 16:20:52 by tdehne            #+#    #+#             */
-/*   Updated: 2022/08/25 15:53:52 by tdehne           ###   ########.fr       */
+/*   Created: 2022/08/25 18:12:00 by tdehne            #+#    #+#             */
+/*   Updated: 2022/08/25 18:18:42 by tdehne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-int	get_fractal_type(char **argv)
+void	my_exit(t_all_s all_s)
 {
-	if (!*(argv + 1))
-		return (ERROR);
-	else if (ft_strncmp(*(argv + 1), "mandel", 6) == 0)
-		return (MANDEL);
-	else if (ft_strncmp(*(argv + 1), "julia", 5) == 0)
-		return (JULIA);
-	return (ERROR);
+	free(all_s.pxl);
+	mlx_terminate(all_s.vars->mlx);
+	all_s.pxl = NULL;
+	system("leaks a.out");
+	exit(0);
 }
