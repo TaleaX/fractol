@@ -6,7 +6,7 @@
 /*   By: tdehne <tdehne@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 18:12:00 by tdehne            #+#    #+#             */
-/*   Updated: 2022/08/26 17:41:19 by tdehne           ###   ########.fr       */
+/*   Updated: 2022/08/26 17:44:31 by tdehne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,13 @@ void	zoom_util(double ydelta, t_all_s *all_s)
 
 void	set_julia_vals(t_all_s all_s, char **argv)
 {
-	if (all_s.fractal->frac_type == JULIA)
+	if (!argv[2] || !argv[3])
 	{
-		all_s.fractal->c_r = atof(argv[2]);
-		all_s.fractal->c_i = atof(argv[3]);
+		write(1, "mandel\njulia <num> <num>\nbship\n", 31);
+		my_exit(all_s);
 	}
+	all_s.fractal->c_r = ft_atof(argv[2]);
+	all_s.fractal->c_i = ft_atof(argv[3]);
 }
 
 void	reset(t_all_s all_s)
