@@ -1,7 +1,7 @@
-CC=cc
+CC=cc#-g -fsanitize=address
 CFLAGS=-Wall -Wextra -Werror -Ofast
 SRC_DIR=src/
-SRC_NAME=main.c mandelbrot.c coloring_alg.c parse_world_screen.c julia.c init.c bship.c coloring.c utils.c ft_atof.c
+SRC_NAME=main.c mandelbrot.c coloring_alg.c parse_world_screen.c julia.c init.c bship.c coloring.c utils.c ft_atof.c keys.c
 SRC=$(addprefix $(SRC_DIR),$(SRC_NAME))
 SRC_OLD_DIR := src_oldmlx/
 SRC_OLD := $(addprefix $(SRC_OLD_DIR),$(SRC_NAME))
@@ -20,7 +20,7 @@ all: $(NAME)
 	$(CC) -Imlx_new -c $< $(INC_LIB) -o $@
 
 $(NAME): $(LIBFT) $(OBJ)
-	gcc $(OBJ) mlx_new/libmlx42.a mlx_new/libglfw3.a -framework Cocoa -framework OpenGL -framework IOKit -L $(LIB_DIR) -lft
+	$(CC) $(OBJ) mlx_new/libmlx42.a mlx_new/libglfw3.a -framework Cocoa -framework OpenGL -framework IOKit -L $(LIB_DIR) -lft
 
 test: $(SRC)
 	$(CC) $(CFLAGS) -g $< -o $@
