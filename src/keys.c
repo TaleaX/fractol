@@ -6,11 +6,23 @@
 /*   By: tdehne <tdehne@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 16:44:27 by tdehne            #+#    #+#             */
-/*   Updated: 2022/08/28 12:20:01 by tdehne           ###   ########.fr       */
+/*   Updated: 2022/08/28 16:07:59 by tdehne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
+
+static void	set_julia(t_all_s *all_s)
+{
+	int		mouse_x;
+	int		mouse_y;
+
+	mlx_get_mouse_pos(all_s->vars->mlx, &mouse_x, &mouse_y);
+	all_s->fractal->c_r = (double)(mouse_x * all_s->g_vars->steps_x \
+		- all_s->g_vars->offset_x);
+	all_s->fractal->c_i = (double)(all_s->g_vars->offset_y \
+		- all_s->g_vars->steps_y * mouse_y);
+}
 
 int	key_for_color(t_all_s *all_s)
 {
@@ -67,7 +79,10 @@ int	key_core(t_all_s *all_s)
 	else if (all_s->vars->iter_depth <= 0)
 		all_s->vars->iter_depth = 50;
 	else if (mlx_is_key_down(all_s->vars->mlx, MLX_KEY_J))
+	{
 		all_s->fractal->frac_type = JULIA;
+		set_julia(all_s);
+	}
 	else if (mlx_is_key_down(all_s->vars->mlx, MLX_KEY_M))
 		all_s->fractal->frac_type = MANDEL;
 	else if (mlx_is_key_down(all_s->vars->mlx, MLX_KEY_B))
