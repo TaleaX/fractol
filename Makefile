@@ -46,7 +46,7 @@ $(OBJ_DIR)%.o: $(SRC_DIR)%.c
 	@echo "$(BLUE)Compiling: $(RESET) $<"
 	@$(CC) $(CFLAGS) -o $@ -c $^ $(INC_LIB) $(INC_MLX)
 
-$(NAME): $(MLX42) $(BREW) $(GLFW_DIR) $(LIBFT) $(MLX) $(OBJ)
+$(NAME): $(MLX42) $(BREW_FILE) $(GLFW_DIR) $(LIBFT) $(MLX) $(OBJ)
 	@$(CC) $(CFLAGS) $(OBJ) $(MLX) $(INC_GLFW) $(LIB_GLFW) -L $(GLFW_DIR) -L $(LIB_DIR) -lft -framework Cocoa -framework OpenGL -framework IOKit -o $(NAME)
 	@echo "$(GREEN)Done$(RESET)"
 
@@ -64,12 +64,16 @@ $(GLFW_DIR) :
 	@echo "$(MAGENTA) ----- INSTALLING GLFW ----- $(RESET)"
 	brew install glfw
 
-$(BREW):
-	@if [ ! -f $(BREW_FILE) ]; then \
+$(BREW_FILE):
+	@echo "$(MAGENTA) ----- INSTALLING BREW ----- $(RESET)"
+	@curl -fsSL https://rawgit.com/kube/42homebrew/master/install.sh | zsh
+
+#$(BREW):
+#	@if [ ! -f $(BREW_FILE) ]; then \
 		echo "$(MAGENTA) ----- INSTALLING BREW ----- $(RESET)"; \
 		curl -fsSL https://rawgit.com/kube/42homebrew/master/install.sh | zsh; \
 	fi;
-	@touch .brew
+#	@touch .brew
 
 clean:
 	rm -rf $(OBJ_DIR)
