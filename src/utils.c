@@ -6,7 +6,7 @@
 /*   By: tdehne <tdehne@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 18:12:00 by tdehne            #+#    #+#             */
-/*   Updated: 2022/08/28 15:54:53 by tdehne           ###   ########.fr       */
+/*   Updated: 2022/08/28 16:56:17 by tdehne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,15 @@ void	my_exit(t_all_s all_s)
 	free(all_s.fractal);
 	free(all_s.color);
 	free(all_s.g_vars);
-	mlx_terminate(all_s.vars->mlx);
+	free(all_s.img);
+	if (all_s.vars->mlx)
+		mlx_terminate(all_s.vars->mlx);
 	free(all_s.vars);
 	all_s.pxl = NULL;
 	all_s.g_vars = NULL;
 	all_s.fractal = NULL;
 	all_s.vars = NULL;
+	all_s.img = NULL;
 	system("leaks fractol");
 	exit(0);
 }
@@ -44,11 +47,6 @@ void	zoom_util(double ydelta, t_all_s *all_s)
 
 void	set_julia_vals(t_all_s all_s, char **argv)
 {
-	if (!argv[2] || !argv[3])
-	{
-		write(1, "mandel\njulia <num> <num>\nbship\n", 31);
-		my_exit(all_s);
-	}
 	all_s.fractal->c_r = ft_atof(argv[2]);
 	all_s.fractal->c_i = ft_atof(argv[3]);
 }
@@ -72,13 +70,13 @@ void	reset(t_all_s all_s)
 		all_s.color->shift = 1;
 }
 
-int	get_fractal_type(char **argv)
+t_frac_type	get_fractal_type(char **argv)
 {
 	if (!*(argv + 1))
 		return (ERROR);
 	else if (ft_strncmp(*(argv + 1), "mandel", 6) == 0)
 		return (MANDEL);
-	else if (ft_strncmp(*(argv + 1), "julia", 5) == 0)
+	else if (ft_strncmp(*(argv + 1), "julia", 5) == 0 && argv[2] && argv[3])
 		return (JULIA);
 	else if (ft_strncmp(*(argv + 1), "bship", 5) == 0)
 		return (BSHIP);

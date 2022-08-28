@@ -6,7 +6,7 @@
 /*   By: tdehne <tdehne@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 07:19:22 by tdehne            #+#    #+#             */
-/*   Updated: 2022/08/28 12:26:12 by tdehne           ###   ########.fr       */
+/*   Updated: 2022/08/28 16:42:41 by tdehne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ int	main(int argc, char *argv[])
 	init_calc(calc);
 	all_s.pxl = pxl;
 	all_s.calc = calc;
-	if (argc < 2 || init_vars(&all_s, argv) == ERROR)
+	if (init_vars(&all_s, argv) == ERROR || argc < 2)
 	{
 		write(1, "mandel\njulia <num> <num>\nbship\n", 31);
 		my_exit(all_s);

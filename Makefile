@@ -31,7 +31,7 @@ INC_LIB=-I$(LIB_DIR)
 INC_SRC=-I$(INC_DIR)
 INC_MLX=-I$(MLX42)include/MLX42
 
-SRC_NAME=main.c mandelbrot.c coloring_alg.c parse_world_screen.c julia.c init.c bship.c coloring.c utils.c ft_atof.c keys.c
+SRC_NAME=main.c mandelbrot.c coloring_alg.c parse_and_icalc.c julia.c init.c bship.c coloring.c utils.c ft_atof.c keys.c
 
 OBJ_NAME=$(SRC_NAME:.c=.o)
 OBJ=$(addprefix $(OBJ_DIR),$(OBJ_NAME))
@@ -67,7 +67,7 @@ $(GLFW_DIR) :
 $(BREW_FILE):
 	@echo "$(MAGENTA) ----- INSTALLING BREW ----- $(RESET)"
 	@curl -fsSL https://rawgit.com/kube/42homebrew/master/install.sh | zsh
-	@source ~/ zshrc
+	@source ~/.zshrc
 
 #$(BREW):
 #	@if [ ! -f $(BREW_FILE) ]; then \

@@ -6,13 +6,12 @@
 /*   By: tdehne <tdehne@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 07:24:48 by tdehne            #+#    #+#             */
-/*   Updated: 2022/08/28 15:29:16 by tdehne           ###   ########.fr       */
+/*   Updated: 2022/08/28 17:08:23 by tdehne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FRACTOL_H
 # define FRACTOL_H
-# define ERROR -1
 # define GT_MAX_INT 2147483648
 # include <math.h>
 # include <stdlib.h>
@@ -22,6 +21,7 @@
 # include "libft.h"
 
 typedef enum s_frac_type {
+	ERROR = -1,
 	MANDEL,
 	JULIA,
 	BSHIP
@@ -102,39 +102,39 @@ struct s_all_s {
 //void	my_mlx_pixel_put(t_img *data, int x, int y, int color);
 
 //coloring_alg
-int		color(int n, int max_value, t_color color);
+int			color(int n, int max_value, t_color color);
 
 //make fractals
-void	make_mandel(t_pxl_data *pxl, t_all_s *all_s);
-void	make_julia(t_pxl_data *pxl, t_all_s *all_s);
-void	make_bship(t_pxl_data *pxl, t_all_s *all_s);
+void		make_mandel(t_pxl_data *pxl, t_all_s *all_s);
+void		make_julia(t_pxl_data *pxl, t_all_s *all_s);
+void		make_bship(t_pxl_data *pxl, t_all_s *all_s);
 
 //init
-int		init_vars(t_all_s *all_s, char **argv);
-void	init_calc(t_calc calc[3]);
+int			init_vars(t_all_s *all_s, char **argv);
 
 //coloring
-void	color_shift(t_pxl_data *pxl, t_all_s *all_s);
-void	color_normal(t_pxl_data *pxl, t_all_s *all_s);
+void		color_shift(t_pxl_data *pxl, t_all_s *all_s);
+void		color_normal(t_pxl_data *pxl, t_all_s *all_s);
 
-//parse math
-void	screen_to_world(t_graphic_vars *g_vars);
+//parse math and init calc
+void		screen_to_world(t_graphic_vars *g_vars);
+void		init_calc(t_calc calc[3]);
 
 //utils
-void	zoom_util(double ydelta, t_all_s *all_s);
-void	my_exit(t_all_s all_s);
-void	set_julia_vals(t_all_s all_s, char **argv);
-int		get_fractal_type(char **argv);
+void		zoom_util(double ydelta, t_all_s *all_s);
+void		my_exit(t_all_s all_s);
+void		set_julia_vals(t_all_s all_s, char **argv);
+t_frac_type	get_fractal_type(char **argv);
 
 //ft_atof
-double	ft_atof(char *str);
+double		ft_atof(char *str);
 
 //reset
-void	reset(t_all_s all_s);
+void		reset(t_all_s all_s);
 
 //key utils
-int		key_for_color(t_all_s *all_s);
-int		key_for_move(t_all_s *all_s);
-int		key_core(t_all_s *all_s);
+int			key_for_color(t_all_s *all_s);
+int			key_for_move(t_all_s *all_s);
+int			key_core(t_all_s *all_s);
 
 #endif
