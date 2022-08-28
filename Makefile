@@ -67,6 +67,7 @@ $(GLFW_DIR) :
 $(BREW_FILE):
 	@echo "$(MAGENTA) ----- INSTALLING BREW ----- $(RESET)"
 	@curl -fsSL https://rawgit.com/kube/42homebrew/master/install.sh | zsh
+	@source ~/ zshrc
 
 #$(BREW):
 #	@if [ ! -f $(BREW_FILE) ]; then \
