@@ -6,7 +6,7 @@
 /*   By: tdehne <tdehne@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 07:19:22 by tdehne            #+#    #+#             */
-/*   Updated: 2022/08/26 17:45:01 by tdehne           ###   ########.fr       */
+/*   Updated: 2022/08/28 12:26:12 by tdehne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,10 @@ void	my_keyhook(mlx_key_data_t keydata, void *context)
 	t_all_s	*all_s;
 
 	all_s = context;
-	if (!key_for_move(keydata, all_s) && !key_for_color(keydata, all_s)
-		&& !key_core(keydata, all_s))
+	if (keydata.key)
+		;
+	if (!key_for_move(all_s) && !key_for_color(all_s)
+		&& !key_core(all_s))
 		return ;
 	all_s->calc[all_s->fractal->frac_type](all_s->pxl, all_s);
 }
@@ -58,6 +60,8 @@ void	zoom(double xdelta, double ydelta, void	*context)
 	int		mouse_y;
 
 	all_s = context;
+	if (xdelta)
+		;
 	mlx_get_mouse_pos(all_s->vars->mlx, &mouse_x, &mouse_y);
 	m_wx = (double)(mouse_x * all_s->g_vars->steps_x - all_s->g_vars->offset_x);
 	m_wy = (double)(all_s->g_vars->offset_y - all_s->g_vars->steps_y * mouse_y);
@@ -80,6 +84,8 @@ void	mouse_press(mouse_key_t button, action_t act, modifier_key_t m, void *c)
 	double	m_wy;
 
 	all_s = c;
+	if (m)
+		;
 	if (button == MLX_MOUSE_BUTTON_LEFT && act == MLX_PRESS)
 	{
 		mlx_get_mouse_pos(all_s->vars->mlx, &mouse_x, &mouse_y);
@@ -103,7 +109,7 @@ int	main(int argc, char *argv[])
 	init_calc(calc);
 	all_s.pxl = pxl;
 	all_s.calc = calc;
-	if (init_vars(&all_s, argv) == ERROR)
+	if (argc < 2 || init_vars(&all_s, argv) == ERROR)
 	{
 		write(1, "mandel\njulia <num> <num>\nbship\n", 31);
 		my_exit(all_s);

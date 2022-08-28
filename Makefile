@@ -1,45 +1,83 @@
-CC=cc#-g -fsanitize=address
-CFLAGS=-Wall -Wextra -Werror -Ofast
-SRC_DIR=src/
-SRC_NAME=main.c mandelbrot.c coloring_alg.c parse_world_screen.c julia.c init.c bship.c coloring.c utils.c ft_atof.c keys.c
-SRC=$(addprefix $(SRC_DIR),$(SRC_NAME))
-SRC_OLD_DIR := src_oldmlx/
-SRC_OLD := $(addprefix $(SRC_OLD_DIR),$(SRC_NAME))
-OBJ=$(SRC:.c=.o)
-NAME=fractol
+CC=cc
+CFLAGS=-Wall -Wextra -Werror
 
+BOLD	= \033[1m
+BLACK	= \033[30;1m
+RED		= \033[31;1m
+GREEN	= \033[32;1m
+YELLOW	= \033[33;1m
+BLUE	= \033[34;1m
+MAGENTA	= \033[35;1m
+CYAN	= \033[36;1m
+WHITE	= \033[37;1m
+RESET	= \033[0m
+
+SRC_DIR=src/
+OBJ_DIR=obj/
 LIB_DIR=libft/
+INC_DIR=includes/
+MLX42=MLX42/
+
+GLFW_DIR=/Users/$(USER)/.brew/opt/glfw/lib/
+BREW_FILE = /Users/$(USER)/.brewconfig.zsh
+BREW=.brew
+
 LIBFT=$(LIB_DIR)libft.a
-INC_LIB=-Iinlcude/ -I$(LIB_DIR)/
-INC_SRC=-Iinlcude/ -I$(INC_DIR)/
-LIBFT=$(LIB_DIR)libft.a
+MLX=$(MLX42)libmlx42.a
+#GLFW=$(MLX_DIR)libglfw3.a
+LIB_GLFW=-lglfw
+
+INC_LIB=-I$(LIB_DIR)
+INC_SRC=-I$(INC_DIR)
+INC_MLX=-I$(MLX42)include/MLX42
+
+SRC_NAME=main.c mandelbrot.c coloring_alg.c parse_world_screen.c julia.c init.c bship.c coloring.c utils.c ft_atof.c keys.c
+
+OBJ_NAME=$(SRC_NAME:.c=.o)
+OBJ=$(addprefix $(OBJ_DIR),$(OBJ_NAME))
+SRC=$(addprefix $(SRC_DIR),$(SRC_NAME))
+
+NAME=fractol
 
 all: $(NAME)
 
-%.o: %.c
-	$(CC) -Imlx_new -c $< $(INC_LIB) -o $@
+$(OBJ_DIR)%.o: $(SRC_DIR)%.c
+	@mkdir -p $(OBJ_DIR)
+	@echo "$(BLUE)Compiling: $(RESET) $<"
+	@$(CC) $(CFLAGS) -o $@ -c $^ $(INC_LIB) $(INC_MLX)
 
-$(NAME): $(LIBFT) $(OBJ)
-	$(CC) $(OBJ) mlx_new/libmlx42.a mlx_new/libglfw3.a -framework Cocoa -framework OpenGL -framework IOKit -L $(LIB_DIR) -lft
-
-test: $(SRC)
-	$(CC) $(CFLAGS) -g $< -o $@
-
-old : $(SRC_OLD)
-	$(CC) $(SRC_OLD) -Lmlx -lmlx -framework OpenGL -framework AppKit -o $(NAME)
+$(NAME): $(MLX42) $(BREW) $(GLFW_DIR) $(LIBFT) $(MLX) $(OBJ)
+	@$(CC) $(CFLAGS) $(OBJ) $(MLX) $(INC_GLFW) $(LIB_GLFW) -L $(GLFW_DIR) -L $(LIB_DIR) -lft -framework Cocoa -framework OpenGL -framework IOKit -o $(NAME)
+	@echo "$(GREEN)Done$(RESET)"
 
 $(LIBFT):
 	make -C $(LIB_DIR)
 
-debug : CFLAGS += -g
-debug : all
+$(MLX):
+	make -C $(MLX42)
+
+$(MLX42):
+	@echo "$(MAGENTA) ----- CLONING MLX42 ----- $(RESET)"
+	git clone https://github.com/codam-coding-college/MLX42.git
+
+$(GLFW_DIR) :
+	@echo "$(MAGENTA) ----- INSTALLING GLFW ----- $(RESET)"
+	brew install glfw
+
+$(BREW):
+	@if [ ! -f $(BREW_FILE) ]; then \
+		echo "$(MAGENTA) ----- INSTALLING BREW ----- $(RESET)"; \
+		curl -fsSL https://rawgit.com/kube/42homebrew/master/install.sh | zsh; \
+	fi;
+	@touch .brew
 
 clean:
-	rm -f $(OBJ)
+	rm -rf $(OBJ_DIR)
+	make clean -C $(LIB_DIR)
 
 fclean: clean
-	rm -f $(NAME)
+	rm -f $(NAME) $(NAME_BONUS)
+	make fclean -C $(LIB_DIR)
+	make fclean -C $(MLX42)
 
-re: fclean all
-
-#$(CC) $(OBJ) -Lmlx_new -lmlx42 -framework OpenGL -framework AppKit -o $(NAME)
+re: fclean all $(MLX)

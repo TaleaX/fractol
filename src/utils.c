@@ -6,7 +6,7 @@
 /*   By: tdehne <tdehne@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 18:12:00 by tdehne            #+#    #+#             */
-/*   Updated: 2022/08/26 17:44:31 by tdehne           ###   ########.fr       */
+/*   Updated: 2022/08/28 15:54:53 by tdehne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	my_exit(t_all_s all_s)
 	all_s.g_vars = NULL;
 	all_s.fractal = NULL;
 	all_s.vars = NULL;
-	system("leaks a.out");
+	system("leaks fractol");
 	exit(0);
 }
 
@@ -63,8 +63,8 @@ void	reset(t_all_s all_s)
 	all_s.g_vars->offset_y = 2;
 	all_s.g_vars->steps_x = 4.0 / all_s.vars->win_width;
 	all_s.g_vars->steps_y = 4.0 / all_s.vars->win_height;
-	all_s.fractal->c_r = 0.5;
-	all_s.fractal->c_i = 0.1;
+	all_s.fractal->c_r = -0.752;
+	all_s.fractal->c_i = 0.152;
 	all_s.color->max_value = 50;
 	all_s.color->dynamic_max = 0;
 	all_s.color->shift = 0;

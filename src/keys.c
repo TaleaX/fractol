@@ -6,13 +6,13 @@
 /*   By: tdehne <tdehne@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 16:44:27 by tdehne            #+#    #+#             */
-/*   Updated: 2022/08/26 17:10:47 by tdehne           ###   ########.fr       */
+/*   Updated: 2022/08/28 12:20:01 by tdehne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-int	key_for_color(mlx_key_data_t keydata, t_all_s *all_s)
+int	key_for_color(t_all_s *all_s)
 {
 	if (mlx_is_key_down(all_s->vars->mlx, MLX_KEY_1))
 		all_s->vars->color_width += 0.25;
@@ -39,7 +39,7 @@ int	key_for_color(mlx_key_data_t keydata, t_all_s *all_s)
 	return (1);
 }
 
-int	key_for_move(mlx_key_data_t keydata, t_all_s *all_s)
+int	key_for_move(t_all_s *all_s)
 {
 	if (mlx_is_key_down(all_s->vars->mlx, MLX_KEY_RIGHT))
 		all_s->g_vars->offset_x += 0.1 * all_s->g_vars->steps_x \
@@ -58,7 +58,7 @@ int	key_for_move(mlx_key_data_t keydata, t_all_s *all_s)
 	return (1);
 }
 
-int	key_core(mlx_key_data_t keydata, t_all_s *all_s)
+int	key_core(t_all_s *all_s)
 {
 	if (mlx_is_key_down(all_s->vars->mlx, MLX_KEY_A))
 		all_s->vars->iter_depth += 50;

@@ -6,7 +6,7 @@
 /*   By: tdehne <tdehne@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 07:24:48 by tdehne            #+#    #+#             */
-/*   Updated: 2022/08/26 17:35:12 by tdehne           ###   ########.fr       */
+/*   Updated: 2022/08/28 15:29:16 by tdehne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include <unistd.h>
-# include "../mlx_new/include/MLX42/MLX42.h"
+# include "MLX42.h"
 # include "libft.h"
 
 typedef enum s_frac_type {
@@ -133,8 +133,8 @@ double	ft_atof(char *str);
 void	reset(t_all_s all_s);
 
 //key utils
-int		key_for_color(mlx_key_data_t keydata, t_all_s *all_s);
-int		key_for_move(mlx_key_data_t keydata, t_all_s *all_s);
-int		key_core(mlx_key_data_t keydata, t_all_s *all_s);
+int		key_for_color(t_all_s *all_s);
+int		key_for_move(t_all_s *all_s);
+int		key_core(t_all_s *all_s);
 
 #endif
