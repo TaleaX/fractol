@@ -6,7 +6,7 @@
 /*   By: tdehne <tdehne@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/26 16:18:46 by tdehne            #+#    #+#             */
-/*   Updated: 2022/08/22 14:50:36 by tdehne           ###   ########.fr       */
+/*   Updated: 2022/08/29 16:09:29 by tdehne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ long long	ft_atoi(const char *nptr)
 		result += ((*nptr) - '0') * pow_of_a(10, log_10);
 		nptr++;
 	}
-	if (*nptr)
+	if (*nptr && *nptr != '.')
 		return (GT_MAX_INT);
 	if (minus)
 		result = result * (-1);

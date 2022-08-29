@@ -6,11 +6,12 @@
 /*   By: tdehne <tdehne@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 18:12:00 by tdehne            #+#    #+#             */
-/*   Updated: 2022/08/29 15:21:31 by tdehne           ###   ########.fr       */
+/*   Updated: 2022/08/29 17:59:23 by tdehne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
+#include <stdio.h>
 
 void	my_exit(t_all_s all_s)
 {
@@ -75,7 +76,8 @@ t_frac_type	get_fractal_type(char **argv)
 		return (ERROR);
 	else if (ft_strncmp(*(argv + 1), "mandel", 6) == 0)
 		return (MANDEL);
-	else if (ft_strncmp(*(argv + 1), "julia", 5) == 0 && argv[2] && argv[3])
+	else if (ft_strncmp(*(argv + 1), "julia", 5) == 0 && argv[2] && argv[3]
+		&& ft_atof(argv[2]) != GT_MAX_INT && ft_atof(argv[3]) != GT_MAX_INT)
 		return (JULIA);
 	else if (ft_strncmp(*(argv + 1), "bship", 5) == 0)
 		return (BSHIP);

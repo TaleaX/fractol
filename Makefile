@@ -20,7 +20,6 @@ MLX42=MLX42/
 
 GLFW_DIR=/Users/$(USER)/.brew/opt/glfw/lib/
 BREW_FILE = /Users/$(USER)/.brewconfig.zsh
-BREW=.brew
 
 LIBFT=$(LIB_DIR)libft.a
 MLX=$(MLX42)libmlx42.a
