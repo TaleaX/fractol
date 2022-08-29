@@ -69,13 +69,6 @@ $(BREW_FILE):
 	@curl -fsSL https://rawgit.com/kube/42homebrew/master/install.sh | zsh
 	@source ~/.zshrc
 
-#$(BREW):
-#	@if [ ! -f $(BREW_FILE) ]; then \
-		echo "$(MAGENTA) ----- INSTALLING BREW ----- $(RESET)"; \
-		curl -fsSL https://rawgit.com/kube/42homebrew/master/install.sh | zsh; \
-	fi;
-#	@touch .brew
-
 clean:
 	rm -rf $(OBJ_DIR)
 	make clean -C $(LIB_DIR)
