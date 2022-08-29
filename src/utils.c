@@ -6,7 +6,7 @@
 /*   By: tdehne <tdehne@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 18:12:00 by tdehne            #+#    #+#             */
-/*   Updated: 2022/08/28 16:56:17 by tdehne           ###   ########.fr       */
+/*   Updated: 2022/08/29 15:21:31 by tdehne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ void	my_exit(t_all_s all_s)
 	all_s.fractal = NULL;
 	all_s.vars = NULL;
 	all_s.img = NULL;
-	system("leaks fractol");
 	exit(0);
 }
 
