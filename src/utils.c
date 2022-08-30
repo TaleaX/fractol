@@ -6,14 +6,14 @@
 /*   By: tdehne <tdehne@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 18:12:00 by tdehne            #+#    #+#             */
-/*   Updated: 2022/08/29 18:35:36 by tdehne           ###   ########.fr       */
+/*   Updated: 2022/08/30 13:33:55 by tdehne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 #include <stdio.h>
 
-void	my_exit(t_all_s all_s)
+void	my_exit(t_all_s all_s, int end)
 {
 	free(all_s.pxl);
 	free(all_s.fractal);
@@ -28,7 +28,9 @@ void	my_exit(t_all_s all_s)
 	all_s.fractal = NULL;
 	all_s.vars = NULL;
 	all_s.img = NULL;
-	exit(0);
+	if (end)
+		exit(EXIT_SUCCESS);
+	exit(EXIT_FAILURE);
 }
 
 void	zoom_util(double ydelta, t_all_s *all_s)

@@ -6,7 +6,7 @@
 /*   By: tdehne <tdehne@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 07:24:48 by tdehne            #+#    #+#             */
-/*   Updated: 2022/08/29 17:59:33 by tdehne           ###   ########.fr       */
+/*   Updated: 2022/08/30 13:38:15 by tdehne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ void		init_calc(t_calc calc[3]);
 
 //utils
 void		zoom_util(double ydelta, t_all_s *all_s);
-void		my_exit(t_all_s all_s);
+void		my_exit(t_all_s all_s, int end);
 void		set_julia_vals(t_all_s all_s, char **argv);
 t_frac_type	get_fractal_type(char **argv);
 

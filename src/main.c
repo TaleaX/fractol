@@ -6,7 +6,7 @@
 /*   By: tdehne <tdehne@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 07:19:22 by tdehne            #+#    #+#             */
-/*   Updated: 2022/08/29 17:58:46 by tdehne           ###   ########.fr       */
+/*   Updated: 2022/08/30 13:44:56 by tdehne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ int	main(int argc, char *argv[])
 	if (init_vars(&all_s, argv) == ERROR || argc < 2)
 	{
 		write(1, "mandel\njulia <num> <num>\nbship\n", 31);
-		my_exit(all_s);
+		my_exit(all_s, 0);
 	}
 	if (all_s.fractal->frac_type == JULIA)
 		set_julia_vals(all_s, argv);
@@ -122,6 +122,5 @@ int	main(int argc, char *argv[])
 	mlx_scroll_hook(all_s.vars->mlx, &zoom, &all_s);
 	mlx_loop_hook(all_s.vars->mlx, &coloring, &all_s);
 	mlx_loop(all_s.vars->mlx);
-	my_exit(all_s);
-	return (0);
+	my_exit(all_s, 1);
 }

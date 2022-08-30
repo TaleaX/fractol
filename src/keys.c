@@ -6,7 +6,7 @@
 /*   By: tdehne <tdehne@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 16:44:27 by tdehne            #+#    #+#             */
-/*   Updated: 2022/08/28 16:07:59 by tdehne           ###   ########.fr       */
+/*   Updated: 2022/08/30 13:34:59 by tdehne           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	key_core(t_all_s *all_s)
 	else if (mlx_is_key_down(all_s->vars->mlx, MLX_KEY_B))
 		all_s->fractal->frac_type = BSHIP;
 	else if (mlx_is_key_down(all_s->vars->mlx, MLX_KEY_ESCAPE))
-		my_exit(*all_s);
+		my_exit(*all_s, 1);
 	else if (mlx_is_key_down(all_s->vars->mlx, MLX_KEY_Q))
 		reset(*all_s);
 	else
