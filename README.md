@@ -18,7 +18,10 @@
  <img src="pictures/bship1.png" width="30%">
  <img src="pictures/bship2.png" width="30%">
 </p>
-
+<p align="center">
+ <img src="pictures/bship3.png" width="30%">
+ <img src="pictures/bship4.png" width="30%">
+</p>
 
 <h1 align="center"> Julia Images </h1>
 <p align="center">
