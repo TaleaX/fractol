@@ -2,8 +2,8 @@
 <h1 align="center"> Mandelbrot Images </h1>
 
 <p align="center">
-<img src="pictures/fractol1.png" width="20%">
-<img src="pictures/fractol2.png" width="20%">
+<img src="pictures/fractol1.png" width="30%">
+<img src="pictures/fractol2.png" width="30%">
  </p>
  <p>
 <img src="pictures/fractol3.png" width="30%">
