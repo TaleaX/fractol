@@ -1,3 +1,3 @@
-# fractol
+# FRACTOL
 
-![Screenshot](pictures/fractol1.png)
+<img src="pictures/fractol1.png">
