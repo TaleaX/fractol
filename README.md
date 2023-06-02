@@ -1,3 +1,4 @@
+<main align="center">
 <h1 align="center"> Mandelbrot Images </h1>
 
 <p>
@@ -10,3 +11,4 @@
   </p>
 <img src="pictures/fractol5.png" width="30%">
 <img src="pictures/fractol6.png" width="30%">
+</main>
